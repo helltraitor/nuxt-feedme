@@ -1,3 +1,7 @@
+import { Feed, FeedOptions } from 'feed'
+import { H3Event } from 'h3'
+import { RenderResponse } from 'nitropack'
+
 type RouteString = string
 
 export type FeedRSSContentType = 'application/json' | 'application/atom+xml' | 'application/rss+xml'
@@ -50,6 +54,22 @@ export interface FeedmeRSSOptions {
 
 export interface FeedmeModuleOptions {
   feeds: Record<RouteString, FeedmeRSSOptions | undefined>
+}
+
+declare module 'nitropack' {
+  export interface NitroFeedmeHandleOptions {
+    context: {
+      event: H3Event
+    }
+    feed: {
+      create: (options: FeedOptions) => Feed
+      feedme: FeedmeRSSOptions
+    }
+  }
+
+  interface NitroRuntimeHooks {
+    'feedme:handle': (options: NitroFeedmeHandleOptions) => Feed;
+  }
 }
 
 declare module '#feedme' {
