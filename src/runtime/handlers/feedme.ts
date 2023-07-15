@@ -20,10 +20,13 @@ const intoSeconds = (feedRevisit: FeedRevisit | undefined): number => {
   }
 
   return (
+    // Calculate in seconds
     (revisit?.days ?? 0) * 24 * 60 * 60
     + (revisit?.hours ?? 0) * 60 * 60
     + (revisit?.minutes ?? 0) * 60
     + (revisit?.seconds ?? 0)
+    // Or 6h if 0s
+    || 6 * 60 * 60
   )
 }
 
