@@ -6,6 +6,10 @@ export default defineNuxtModule<FeedmeModuleOptions>({
   meta: {
     name: 'nuxt-feedme',
     configKey: 'feedme',
+    compatibility: {
+      nuxt: '^3.0.0',
+    },
+    version: '0.0.1',
   },
   // Default configuration options of the Nuxt module
   defaults: {
