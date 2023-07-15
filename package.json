@@ -1,15 +1,16 @@
 {
   "name": "nuxt-feedme",
-  "version": "0.0.1",
-  "description": "The RSS feed module for Nuxt web framework",
-  "repository": "helltraitor/nuxt-feedme",
-  "license": "MIT",
   "type": "module",
+  "version": "0.0.1",
+  "packageManager": "yarn@3.6.1",
+  "description": "The RSS feed module for Nuxt web framework",
+  "license": "MIT",
+  "repository": "helltraitor/nuxt-feedme",
   "exports": {
     ".": {
       "types": "./dist/types.d.ts",
-      "import": "./dist/module.mjs",
-      "require": "./dist/module.cjs"
+      "require": "./dist/module.cjs",
+      "import": "./dist/module.mjs"
     }
   },
   "main": "./dist/module.cjs",
@@ -42,6 +43,5 @@
     "eslint": "^8.45.0",
     "nuxt": "^3.6.3",
     "vitest": "^0.33.0"
-  },
-  "packageManager": "yarn@3.6.1"
+  }
 }
