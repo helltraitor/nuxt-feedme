@@ -53,7 +53,8 @@ export interface FeedmeModuleOptions {
 }
 
 declare module '#feedme' {
-  export default FeedmeModuleOptions
+  // TODO: Rollup works incorrect for exports in shims (https://github.com/Swatinem/rollup-plugin-dts/issues/162)
+  // export default FeedmeModuleOptions
 }
 
 export {}
