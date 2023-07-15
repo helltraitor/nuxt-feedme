@@ -1,4 +1,10 @@
 {
   "root": true,
-  "extends": ["@nuxt/eslint-config"]
+  "extends": [
+    "@nuxt/eslint-config",
+    "@antfu"
+  ],
+  "rules": {
+    "antfu/top-level-function": 0
+  }
 }
