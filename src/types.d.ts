@@ -52,4 +52,8 @@ export interface FeedmeModuleOptions {
   feeds: Record<RouteString, FeedmeRSSOptions | undefined>
 }
 
+declare module '#feedme' {
+  export default FeedmeModuleOptions
+}
+
 export {}
