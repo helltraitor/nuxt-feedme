@@ -1,7 +1,9 @@
-import { defineEventHandler, setHeaders } from 'h3'
+import { Feed, type FeedOptions } from 'feed'
+import { H3Error, defineEventHandler, setHeaders } from 'h3'
 
 import type { FeedRSSContentType, FeedRSSType, FeedRevisit, FeedRevisitObject, FeedmeModuleOptions } from '../../types'
 import feedme from '#feedme'
+import { useNitroApp } from '#imports'
 
 const intoSeconds = (feedRevisit: FeedRevisit | undefined): number => {
   const EXTRACT = /((?<days>\d+)d)?(\s?(?<hours>\d+)h)?(\s?(?<minutes>\d+)m)?(\s?(?<seconds>\d+)s)?/
@@ -35,14 +37,27 @@ const intoContentType = (feedType: FeedRSSType | undefined): FeedRSSContentType 
   return LOOKUP[feedType ?? '']
 }
 
+const getFeedRSSTypeFrom = (route: string): FeedRSSType | undefined => {
+  const EXTRACT = /\.(?<ext>\w+)$/
+
+  switch (route.match(EXTRACT)?.groups?.ext) {
+    case 'atom':
+      return 'atom1'
+    case 'json':
+      return 'json1'
+    case 'xml':
+      return 'rss2'
+  }
+}
+
 const getFeedmeModuleOptions = (): FeedmeModuleOptions => {
   return feedme as any as FeedmeModuleOptions
 }
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
   const moduleOptions = getFeedmeModuleOptions()
-  const feed = moduleOptions.feeds[event.path]
-  if (!feed) {
+  const feedme = moduleOptions.feeds[event.path]
+  if (!feedme) {
     console.warn(
       `[nuxt-feedme]: Incorrect handler set for route '${event.path}'. That route is not found in feeds:`,
       moduleOptions.feeds,
@@ -51,9 +66,25 @@ export default defineEventHandler((event) => {
   }
 
   setHeaders(event, {
-    'Content-Type': intoContentType(feed.type) ?? 'text/plain',
-    'Cache-Control': `Max-Age=${intoSeconds(feed.revisit)}`,
+    'Content-Type': intoContentType(feedme.type) ?? 'text/plain',
+    'Cache-Control': `Max-Age=${intoSeconds(feedme.revisit)}`,
   })
 
-  return ''
+  const feedHandleOptions = {
+    context: { event },
+    feed: {
+      create: (options: FeedOptions) => new Feed(options),
+      feedme,
+    },
+  }
+
+  const feed: Feed = await useNitroApp().hooks.callHook('feedme:handle', feedHandleOptions)
+  const kind = feedme.type ?? getFeedRSSTypeFrom(event.path)
+  if (!kind)
+    return new H3Error(`[nuxt-feedme]: Unable to determine RSS feed type from route '${event.path}'`)
+
+  if (typeof feed[kind] !== 'function')
+    return new H3Error(`[nuxt-feedme]: Incorrect kind '${kind}' of RSS feed type from route '${event.path}'`)
+
+  return feed[kind]()
 })
