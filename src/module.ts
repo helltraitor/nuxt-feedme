@@ -1,19 +1,47 @@
-import { addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addImportsDir, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 
-// Module options TypeScript interface definition
-export interface ModuleOptions {}
+import type { FeedmeModuleOptions } from './types'
 
-export default defineNuxtModule<ModuleOptions>({
+export default defineNuxtModule<FeedmeModuleOptions>({
   meta: {
     name: 'nuxt-feedme',
     configKey: 'feedme',
   },
   // Default configuration options of the Nuxt module
-  defaults: {},
+  defaults: {
+    feeds: {
+      '/feed.atom': { revisit: '6h', type: 'atom1' },
+      '/feed.xml': { revisit: '6h', type: 'rss2' },
+      '/feed.json': { revisit: '6h', type: 'json1' },
+    },
+  },
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
-    // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
-    addPlugin(resolver.resolve('./runtime/plugin'))
+    const feedme = addTemplate({
+      filename: 'feedme.mjs',
+      write: true,
+      getContents: () => `export default ${JSON.stringify(options, null, 2)}`,
+    })
+    nuxt.options.alias['#feedme'] = new URL(feedme.dst).toString()
+
+    nuxt.hook('nitro:config', (config) => {
+      for (const route in options.feeds) {
+        config.handlers ??= []
+        config.handlers.push({
+          handler: resolver.resolve('./runtime/handlers/feedme'),
+          method: 'get',
+          route,
+        })
+
+        if (nuxt.options.ssr) {
+          config.prerender ??= {}
+          config.prerender.routes ??= []
+          config.prerender.routes.push(route)
+        }
+      }
+    })
+
+    addImportsDir(resolver.resolve('./runtime'))
   },
 })
