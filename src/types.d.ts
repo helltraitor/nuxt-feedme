@@ -1,6 +1,3 @@
-import { Feed, FeedOptions } from 'feed'
-import { H3Event } from 'h3'
-
 type RouteString = string
 
 export type FeedRSSContentType = 'application/json' | 'application/atom+xml' | 'application/rss+xml'
@@ -74,18 +71,18 @@ export interface FeedmeModuleOptions {
 }
 
 declare module 'nitropack' {
-  export interface NitroFeedmeHandleOptions {
+  export interface NitroFeedmeHandleOptions<E = any, F = any, FO = any> {
     context: {
-      event: H3Event
+      event: E
     }
     feed: {
-      create: (options: FeedOptions) => Feed
+      create: (options: FO) => F
       feedme: FeedmeRSSOptions
     }
   }
 
-  interface NitroRuntimeHooks {
-    'feedme:handle': (options: NitroFeedmeHandleOptions) => Feed;
+  interface NitroRuntimeHooks<E = any, F = any, FO = any> {
+    'feedme:handle': (options: NitroFeedmeHandleOptions<E, F, FO>) => F;
   }
 }
 
