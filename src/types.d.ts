@@ -1,6 +1,5 @@
 import { Feed, FeedOptions } from 'feed'
 import { H3Event } from 'h3'
-import { RenderResponse } from 'nitropack'
 
 type RouteString = string
 
