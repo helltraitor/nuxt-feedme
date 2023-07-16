@@ -30,7 +30,8 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.6.3",
-    "feed": "^4.2.2"
+    "feed": "^4.2.2",
+    "h3": "^1.7.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.39.7",
