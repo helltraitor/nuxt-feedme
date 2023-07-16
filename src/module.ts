@@ -45,5 +45,11 @@ export default defineNuxtModule<FeedmeModuleOptions>({
         }
       }
     })
+
+    nuxt.hook('prepare:types', ({ references }) => {
+      references.push({ path: resolver.resolve('./feedme.d.ts') })
+      references.push({ path: resolver.resolve('./nitropack.d.ts') })
+      references.push({ path: resolver.resolve('./types.d.ts') })
+    })
   },
 })
