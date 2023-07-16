@@ -1,4 +1,5 @@
 import './feedme'
+import './nitropack'
 
 type RouteString = string
 
@@ -70,22 +71,6 @@ export interface FeedmeRSSOptions {
 
 export interface FeedmeModuleOptions {
   feeds: Record<RouteString, FeedmeRSSOptions | undefined>
-}
-
-declare module 'nitropack' {
-  export interface NitroFeedmeHandleOptions<E = any, F = any, FO = any> {
-    context: {
-      event: E
-    }
-    feed: {
-      create: (options: FO) => F
-      feedme: FeedmeRSSOptions
-    }
-  }
-
-  interface NitroRuntimeHooks<E = any, F = any, FO = any> {
-    'feedme:handle': (options: NitroFeedmeHandleOptions<E, F, FO>) => F;
-  }
 }
 
 export {}
