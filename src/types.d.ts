@@ -1,3 +1,5 @@
+import './feedme'
+
 type RouteString = string
 
 export type FeedRSSContentType = 'application/json' | 'application/atom+xml' | 'application/rss+xml'
@@ -84,11 +86,6 @@ declare module 'nitropack' {
   interface NitroRuntimeHooks<E = any, F = any, FO = any> {
     'feedme:handle': (options: NitroFeedmeHandleOptions<E, F, FO>) => F;
   }
-}
-
-declare module '#feedme' {
-  // TODO: Rollup works incorrect for exports in shims (https://github.com/Swatinem/rollup-plugin-dts/issues/162)
-  // export default FeedmeModuleOptions
 }
 
 export {}
