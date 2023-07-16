@@ -1,4 +1,4 @@
-import { addImportsDir, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 
 import type { FeedmeModuleOptions } from './types'
 
@@ -33,7 +33,7 @@ export default defineNuxtModule<FeedmeModuleOptions>({
       for (const route in options.feeds) {
         config.handlers ??= []
         config.handlers.push({
-          handler: resolver.resolve('./runtime/handlers/feedme'),
+          handler: resolver.resolve('./runtime/feedme'),
           method: 'get',
           route,
         })
@@ -45,7 +45,5 @@ export default defineNuxtModule<FeedmeModuleOptions>({
         }
       }
     })
-
-    addImportsDir(resolver.resolve('./runtime'))
   },
 })
