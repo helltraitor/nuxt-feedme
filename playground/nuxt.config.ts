@@ -1,5 +1,8 @@
 export default defineNuxtConfig({
-  modules: ['../src/module'],
+  modules: [
+    '@nuxt/content',
+    '../src/module',
+  ],
   feedme: {},
   devtools: { enabled: true },
 })
