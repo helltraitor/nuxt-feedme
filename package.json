@@ -29,6 +29,7 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
+    "@nuxt/content": "^2.7.0",
     "@nuxt/kit": "^3.6.3",
     "feed": "^4.2.2",
     "h3": "^1.7.1"
