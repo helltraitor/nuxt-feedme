@@ -1,3 +1,4 @@
+import './content'
 import './feedme'
 import './nitropack'
 
