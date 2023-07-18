@@ -1,6 +1,8 @@
 import { Feed, type FeedOptions } from 'feed'
+import type { H3Event } from 'h3'
 import { H3Error, defineEventHandler, setHeaders } from 'h3'
 
+import type { FeedRSSOptions } from '../types'
 import { getFeedRSSTypeFrom, getFeedmeModuleOptions, intoContentType, intoSeconds } from './feedme'
 
 import { useNitroApp } from '#imports'
@@ -9,17 +11,7 @@ interface FeedmeHandlePersistent {
   feed?: Feed
 }
 
-export default defineEventHandler(async (event) => {
-  const moduleOptions = getFeedmeModuleOptions()
-  const feedme = moduleOptions.feeds[event.path]
-  if (!feedme) {
-    console.warn(
-      `[nuxt-feedme]: Incorrect handler set for route '${event.path}'. That route is not found in feeds:`,
-      moduleOptions.feeds,
-    )
-    return
-  }
-
+const feedmeHandleDefault = async (event: H3Event, feedme: FeedRSSOptions) => {
   setHeaders(event, {
     'Content-Type': intoContentType(feedme.type) ?? 'text/plain',
     'Cache-Control': `Max-Age=${intoSeconds(feedme.revisit)}`,
@@ -53,4 +45,17 @@ export default defineEventHandler(async (event) => {
     return new H3Error(`[nuxt-feedme]: Incorrect kind '${kind}' of RSS feed type from route '${event.path}'`)
 
   return feed[kind]()
+}
+
+export default defineEventHandler(async (event) => {
+  const moduleOptions = getFeedmeModuleOptions()
+  const feedme = moduleOptions.feeds[event.path]
+  if (!feedme) {
+    console.warn(
+      `[nuxt-feedme]: Incorrect handler set for route '${event.path}'. That route is not found in feeds:`,
+      moduleOptions.feeds,
+    )
+  }
+
+  return await feedmeHandleDefault(event, feedme)
 })
