@@ -2,14 +2,14 @@ import './content'
 import './feedme'
 import './nitropack'
 
-import type { FeedRSSContentOptions, FeedmeModuleContentOptions } from './content'
+import type { FeedmeRSSContentOptions, FeedmeModuleContentOptions } from './content'
 
-export type FeedRSSRoute = string
+export type FeedmeRSSRoute = string
 
-export type FeedRSSContentType = 'application/json' | 'application/atom+xml' | 'application/rss+xml'
-export type FeedRSSType = 'json1' | 'atom1' | 'rss2'
+export type FeedmeRSSContentType = 'application/json' | 'application/atom+xml' | 'application/rss+xml'
+export type FeedmeRSSType = 'json1' | 'atom1' | 'rss2'
 
-export interface FeedRevisitObject {
+export interface FeedmeRevisitObject {
   seconds?: number
   minutes?: number
   hours?: number
@@ -44,7 +44,7 @@ type FRQHoursSeconds = `${FRQHours} ${FRQSeconds}`
 // Minutes\Seconds
 type FRQMinutesSeconds = `${FRQMinutes} ${FRQSeconds}`
 
-export type FeedRevisitQuery = (
+export type FeedmeRevisitQuery = (
   // DAYS
   FRQDays
   | FRQDaysHours
@@ -65,15 +65,15 @@ export type FeedRevisitQuery = (
   | FRQSeconds
 )
 
-export type FeedRevisit = FeedRevisitQuery | FeedRevisitObject
+export type FeedmeRevisit = FeedmeRevisitQuery | FeedmeRevisitObject
 
 export interface FeedmeRSSOptions {
-  type?: FeedRSSType
-  revisit?: FeedRevisit
+  type?: FeedmeRSSType
+  revisit?: FeedmeRevisit
 }
 
 export interface FeedmeModuleOptions {
-  feeds: Record<FeedRSSRoute, FeedRSSContentOptions | FeedmeRSSOptions | undefined>
+  feeds: Record<FeedmeRSSRoute, FeedmeRSSContentOptions | FeedmeRSSOptions | undefined>
   content?: FeedmeModuleContentOptions
 }
 

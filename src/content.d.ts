@@ -7,7 +7,7 @@ import type { ParsedContent, QueryBuilderParams } from '@nuxt/content/dist/runti
 
 import type { FeedmeRSSOptions, FeedRSSRoute } from './types'
 
-export interface FeedRSSContentOptions extends FeedmeRSSOptions {
+export interface FeedmeRSSContentOptions extends FeedmeRSSOptions {
   /**
    * The root key in ParsedContent. By default root is equals to object root
    */
@@ -44,7 +44,7 @@ export interface NitroFeedmeContentItemOptions {
     insert: (options: Item) => void
     invoke: () => Item | undefined
     parsed: ParsedContent
-    feedme: FeedRSSContentOptions
+    feedme: FeedmeRSSContentOptions
   }
 }
 
@@ -54,7 +54,7 @@ export interface NitroFeedmeContentAfterOptions {
   }
   feed: {
     invoke: () => Feed
-    feedme: FeedRSSContentOptions
+    feedme: FeedmeRSSContentOptions
   }
 }
 
