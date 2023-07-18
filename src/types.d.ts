@@ -1,5 +1,5 @@
 import './feedme'
-import './nitropack'
+import './virtual'
 
 type RouteString = string
 
