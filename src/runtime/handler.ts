@@ -11,10 +11,10 @@ interface FeedmeHandlePersistent {
   feed?: Feed
 }
 
-const feedmeHandleDefault = async (event: H3Event, feedme: FeedRSSOptions) => {
+const feedmeHandleDefault = async (event: H3Event, feedme: FeedmeRSSOptions | undefined) => {
   setHeaders(event, {
-    'Content-Type': intoContentType(feedme.type) ?? 'text/plain',
-    'Cache-Control': `Max-Age=${intoSeconds(feedme.revisit)}`,
+    'Content-Type': intoContentType(feedme?.type) ?? 'text/plain',
+    'Cache-Control': `Max-Age=${intoSeconds(feedme?.revisit)}`,
   })
 
   const feedmeHandlePersistent: FeedmeHandlePersistent = {}
@@ -33,7 +33,7 @@ const feedmeHandleDefault = async (event: H3Event, feedme: FeedRSSOptions) => {
   await useNitroApp().hooks.callHook(`feedme:handle[${event.path}]`, feedmeHandleOptions)
   await useNitroApp().hooks.callHook('feedme:handle', feedmeHandleOptions)
 
-  const kind = feedme.type ?? getFeedRSSTypeFrom(event.path)
+  const kind = feedme?.type ?? getFeedmeRSSTypeFrom(event.path)
   if (!kind)
     return new H3Error(`[nuxt-feedme]: Unable to determine RSS feed type from route '${event.path}'`)
 
