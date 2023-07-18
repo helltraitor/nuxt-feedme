@@ -35,7 +35,7 @@ export default defineNuxtModule<FeedmeModuleOptions>({
       for (const route in options.feeds) {
         config.handlers ??= []
         config.handlers.push({
-          handler: resolver.resolve('./runtime/feedme'),
+          handler: resolver.resolve('./runtime/handler'),
           method: 'get',
           route,
         })
