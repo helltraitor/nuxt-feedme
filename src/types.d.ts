@@ -2,7 +2,7 @@ import './content'
 import './feedme'
 import './nitropack'
 
-type RouteString = string
+export type FeedRSSRoute = string
 
 export type FeedRSSContentType = 'application/json' | 'application/atom+xml' | 'application/rss+xml'
 export type FeedRSSType = 'json1' | 'atom1' | 'rss2'
@@ -71,7 +71,7 @@ export interface FeedmeRSSOptions {
 }
 
 export interface FeedmeModuleOptions {
-  feeds: Record<RouteString, FeedmeRSSOptions | undefined>
+  feeds: Record<FeedRSSRoute, FeedmeRSSOptions | undefined>
 }
 
 export {}
