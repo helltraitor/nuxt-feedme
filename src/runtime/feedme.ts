@@ -1,11 +1,11 @@
-import type { FeedRSSContentType, FeedRSSType, FeedRevisit, FeedRevisitObject, FeedmeModuleOptions } from '../types'
+import type { FeedmeModuleOptions, FeedmeRSSContentType, FeedmeRSSType, FeedmeRevisit, FeedmeRevisitObject } from '../types'
 
 import feedme from '#feedme'
 
-export const intoSeconds = (feedRevisit: FeedRevisit | undefined): number => {
+export const intoSeconds = (feedRevisit: FeedmeRevisit | undefined): number => {
   const EXTRACT = /((?<days>\d+)d)?(\s?(?<hours>\d+)h)?(\s?(?<minutes>\d+)m)?(\s?(?<seconds>\d+)s)?/
 
-  let revisit = feedRevisit as FeedRevisitObject | undefined
+  let revisit = feedRevisit as FeedmeRevisitObject | undefined
   if (typeof feedRevisit === 'string') {
     const extracted = feedRevisit.match(EXTRACT)?.groups ?? { hours: '24' }
     revisit = {
@@ -27,8 +27,8 @@ export const intoSeconds = (feedRevisit: FeedRevisit | undefined): number => {
   )
 }
 
-export const intoContentType = (feedType: FeedRSSType | undefined): FeedRSSContentType | undefined => {
-  const LOOKUP: Record<string, FeedRSSContentType | undefined> = {
+export const intoContentType = (feedType: FeedmeRSSType | undefined): FeedmeRSSContentType | undefined => {
+  const LOOKUP: Record<string, FeedmeRSSContentType | undefined> = {
     rss2: 'application/rss+xml',
     atom1: 'application/atom+xml',
     json1: 'application/json',
@@ -37,7 +37,7 @@ export const intoContentType = (feedType: FeedRSSType | undefined): FeedRSSConte
   return LOOKUP[feedType ?? '']
 }
 
-export const getFeedRSSTypeFrom = (route: string): FeedRSSType | undefined => {
+export const getFeedmeRSSTypeFrom = (route: string): FeedmeRSSType | undefined => {
   const EXTRACT = /\.(?<ext>\w+)$/
 
   switch (route.match(EXTRACT)?.groups?.ext) {

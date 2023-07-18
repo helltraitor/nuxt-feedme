@@ -2,8 +2,8 @@ import { Feed, type FeedOptions } from 'feed'
 import type { H3Event } from 'h3'
 import { H3Error, defineEventHandler, setHeaders } from 'h3'
 
-import type { FeedRSSOptions } from '../types'
-import { getFeedRSSTypeFrom, getFeedmeModuleOptions, intoContentType, intoSeconds } from './feedme'
+import type { FeedmeRSSOptions } from '../types'
+import { getFeedmeModuleOptions, getFeedmeRSSTypeFrom, intoContentType, intoSeconds } from './feedme'
 
 import { useNitroApp } from '#imports'
 
