@@ -90,6 +90,7 @@ export default defineEventHandler(async (event) => {
     },
   }
 
+  await useNitroApp().hooks.callHook(`feedme:handle[${event.path}]`, feedmeHandleOptions)
   await useNitroApp().hooks.callHook('feedme:handle', feedmeHandleOptions)
 
   const kind = feedme.type ?? getFeedRSSTypeFrom(event.path)

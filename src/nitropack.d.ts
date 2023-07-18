@@ -16,6 +16,7 @@ export interface NitroFeedmeHandleOptions {
 
 declare module 'nitropack' {
   interface NitroRuntimeHooks {
+    [_: `feedme:handle[${string}]`]: (options: NitroFeedmeHandleOptions) => void
     'feedme:handle': (options: NitroFeedmeHandleOptions) => void
   }
 }
