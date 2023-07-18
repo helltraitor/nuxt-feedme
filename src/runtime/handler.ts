@@ -11,7 +11,7 @@ interface FeedmeHandlePersistent {
   feed?: Feed
 }
 
-const feedmeHandleDefault = async (event: H3Event, feedme: FeedmeRSSOptions | undefined) => {
+const feedmeHandleDefault = async (event: H3Event, feedme: FeedmeRSSOptions) => {
   setHeaders(event, {
     'Content-Type': intoContentType(feedme?.type) ?? 'text/plain',
     'Cache-Control': `Max-Age=${intoSeconds(feedme?.revisit)}`,
@@ -51,10 +51,9 @@ export default defineEventHandler(async (event) => {
   const moduleOptions = getFeedmeModuleOptions()
   const feedme = moduleOptions.feeds[event.path]
   if (!feedme) {
-    console.warn(
-      `[nuxt-feedme]: Incorrect handler set for route '${event.path}'. That route is not found in feeds:`,
-      moduleOptions.feeds,
-    )
+    return new H3Error(
+      `[nuxt-feedme]: Incorrect handler set for route '${event.path}'`
+      + ` That route is not found in feeds: ${JSON.stringify(moduleOptions.feeds)}`)
   }
 
   return await feedmeHandleDefault(event, feedme)
