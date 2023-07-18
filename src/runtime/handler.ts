@@ -7,7 +7,7 @@ import { getFeedmeModuleOptions, getFeedmeRSSTypeFrom, intoContentType, intoSeco
 
 import { useNitroApp } from '#imports'
 
-interface FeedmeHandlePersistent {
+interface FeedmeHandleDefaultPersistent {
   feed?: Feed
 }
 
@@ -17,7 +17,7 @@ const feedmeHandleDefault = async (event: H3Event, feedme: FeedmeRSSOptions) => 
     'Cache-Control': `Max-Age=${intoSeconds(feedme?.revisit)}`,
   })
 
-  const feedmeHandlePersistent: FeedmeHandlePersistent = {}
+  const feedmeHandlePersistent: FeedmeHandleDefaultPersistent = {}
   const feedmeHandleOptions = {
     context: { event },
     feed: {
