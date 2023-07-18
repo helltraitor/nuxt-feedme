@@ -9,13 +9,14 @@ export interface NitroFeedmeHandleOptions {
   }
   feed: {
     create: (options: FeedOptions) => Feed
+    invoke: () => Feed | undefined
     feedme: FeedmeRSSOptions
   }
 }
 
 declare module 'nitropack' {
   interface NitroRuntimeHooks {
-    // TODO: replace `void` type by Feed (requires to resolve https://github.com/unjs/hookable/issues/87)
+    [_: `feedme:handle[${string}]`]: (options: NitroFeedmeHandleOptions) => void
     'feedme:handle': (options: NitroFeedmeHandleOptions) => void
   }
 }
