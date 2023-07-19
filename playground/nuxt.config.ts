@@ -1,3 +1,5 @@
+const baseUrl = 'http://localhost:3000'
+
 export default defineNuxtConfig({
   modules: [
     '@nuxt/content',
@@ -7,30 +9,55 @@ export default defineNuxtConfig({
     feeds: {
       '/feed.atom': {},
       '/feed.xml': {},
-      '/content.xml': {
-        baseUrl: 'http://localhost:3000',
-        authors: [{ email: 'helltraitor@hotmail.com', name: 'helltraitor' }],
-        revisit: '1h',
-        categories: ['example'],
+      '/contentDefaults.xml': { content: true },
+      '/contentCustomized.xml': {
         feed: {
-          id: 'Helltraitor',
-          title: 'Helltraitor',
+          defaults: {
+            id: 'helltraitor-content',
+            title: 'Helltraitor Content',
+          },
+        },
+        content: true,
+      },
+    },
+    content: {
+      feed: {
+        baseUrl,
+        defaults: {
+          id: baseUrl,
+          title: 'Content driven',
+          author: { email: 'helltraitor@hotmail.com', name: 'Helltraitor' },
+          categories: ['Content driven'],
           copyright: 'CC BY-NC-SA 4.0 2023 © Helltraitor',
         },
       },
-      '/contentDefaults.xml': { content: true },
-    },
-    content: {
-      baseUrl: 'http://localhost:3000',
-      authors: [{ email: 'helltraitor@hotmail.com', name: 'helltraitor' }],
+      tags: [
+        /**
+         * Replace all strings that starts with `/.*` with by `base/.*`
+         * Tags applied at the last, when values received, but not set to feed or items yet
+         *
+         * Tags are applied for any root value:
+         *
+         * ```
+         * {
+         *  link, // <-- affected
+         *  image: {
+         *     link, // <-- affected
+         *   }
+         * }
+         * ```
+         */
+        [/^\/.*/, source => `${baseUrl}${source}`],
+      ],
       revisit: '1h',
-      categories: ['example', 'default'],
-      feed: {
-        id: 'Helltraitor',
-        title: 'Helltraitor',
-        copyright: 'CC BY-NC-SA 4.0 2023 © Helltraitor',
-      },
     },
   },
   devtools: { enabled: true },
 })
+
+//         },
+//         mapping: {
+//           link: ['', () => baseUrl],
+//         },
+//       },
+//
