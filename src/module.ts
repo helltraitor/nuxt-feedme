@@ -29,8 +29,6 @@ export default defineNuxtModule<FeedmeModuleOptions>({
     })
     nuxt.options.alias['#feedme'] = new URL(feedme.dst).toString()
 
-    addServerPlugin(resolver.resolve('./runtime/content.server'))
-
     nuxt.hook('nitro:config', (config) => {
       for (const route in options.feeds) {
         config.handlers ??= []
