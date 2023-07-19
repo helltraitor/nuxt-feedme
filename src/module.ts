@@ -1,4 +1,4 @@
-import { addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addServerPlugin, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 
 import type { FeedmeModuleOptions } from './types'
 
@@ -29,11 +29,13 @@ export default defineNuxtModule<FeedmeModuleOptions>({
     })
     nuxt.options.alias['#feedme'] = new URL(feedme.dst).toString()
 
+    addServerPlugin(resolver.resolve('./runtime/content.server'))
+
     nuxt.hook('nitro:config', (config) => {
       for (const route in options.feeds) {
         config.handlers ??= []
         config.handlers.push({
-          handler: resolver.resolve('./runtime/feedme'),
+          handler: resolver.resolve('./runtime/handler'),
           method: 'get',
           route,
         })
@@ -47,6 +49,7 @@ export default defineNuxtModule<FeedmeModuleOptions>({
     })
 
     nuxt.hook('prepare:types', ({ references }) => {
+      references.push({ path: resolver.resolve('./content.d.ts') })
       references.push({ path: resolver.resolve('./feedme.d.ts') })
       references.push({ path: resolver.resolve('./types.d.ts') })
       references.push({ path: resolver.resolve('./virtual.d.ts') })

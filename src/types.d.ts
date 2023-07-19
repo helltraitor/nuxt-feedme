@@ -1,12 +1,15 @@
+import './content'
 import './feedme'
 import './virtual'
 
-type RouteString = string
+import type { FeedmeRSSContentOptions, FeedmeModuleContentOptions } from './content'
 
-export type FeedRSSContentType = 'application/json' | 'application/atom+xml' | 'application/rss+xml'
-export type FeedRSSType = 'json1' | 'atom1' | 'rss2'
+export type FeedmeRSSRoute = string
 
-export interface FeedRevisitObject {
+export type FeedmeRSSContentType = 'application/json' | 'application/atom+xml' | 'application/rss+xml'
+export type FeedmeRSSType = 'json1' | 'atom1' | 'rss2'
+
+export interface FeedmeRevisitObject {
   seconds?: number
   minutes?: number
   hours?: number
@@ -41,7 +44,7 @@ type FRQHoursSeconds = `${FRQHours} ${FRQSeconds}`
 // Minutes\Seconds
 type FRQMinutesSeconds = `${FRQMinutes} ${FRQSeconds}`
 
-export type FeedRevisitQuery = (
+export type FeedmeRevisitQuery = (
   // DAYS
   FRQDays
   | FRQDaysHours
@@ -62,15 +65,16 @@ export type FeedRevisitQuery = (
   | FRQSeconds
 )
 
-export type FeedRevisit = FeedRevisitQuery | FeedRevisitObject
+export type FeedmeRevisit = FeedmeRevisitQuery | FeedmeRevisitObject
 
 export interface FeedmeRSSOptions {
-  type?: FeedRSSType
-  revisit?: FeedRevisit
+  type?: FeedmeRSSType
+  revisit?: FeedmeRevisit
 }
 
 export interface FeedmeModuleOptions {
-  feeds: Record<RouteString, FeedmeRSSOptions | undefined>
+  feeds: Record<FeedmeRSSRoute, FeedmeRSSContentOptions | FeedmeRSSOptions | undefined>
+  content?: FeedmeModuleContentOptions
 }
 
 export {}
