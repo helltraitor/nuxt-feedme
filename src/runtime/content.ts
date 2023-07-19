@@ -140,8 +140,6 @@ export const createItemFrom = (options: CreateItemFromOptions, ...variants: Part
     }
   }
 
-  console.log(itemOptions)
-
   return {
     date: new Date(),
     link: '',
