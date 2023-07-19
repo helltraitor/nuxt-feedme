@@ -20,7 +20,7 @@ interface FeedmeHandleContentPersistent {
 
 const feedmeHandleContent = async (event: H3Event, feedme: FeedmeRSSContentOptions, content: FeedmeModuleContentOptions) => {
   setHeaders(event, {
-    'Content-Type': intoContentType(feedme?.type) ?? 'text/plain',
+    'Content-Type': intoContentType(feedme?.type ?? getFeedmeRSSTypeFrom(event.path)) ?? 'text/plain',
     'Cache-Control': `Max-Age=${intoSeconds(feedme?.revisit)}`,
   })
 
@@ -123,7 +123,7 @@ interface FeedmeHandleDefaultPersistent {
 
 const feedmeHandleDefault = async (event: H3Event, feedme: FeedmeRSSOptions) => {
   setHeaders(event, {
-    'Content-Type': intoContentType(feedme.type) ?? 'text/plain',
+    'Content-Type': intoContentType(feedme?.type ?? getFeedmeRSSTypeFrom(event.path)) ?? 'text/plain',
     'Cache-Control': `Max-Age=${intoSeconds(feedme.revisit)}`,
   })
 
