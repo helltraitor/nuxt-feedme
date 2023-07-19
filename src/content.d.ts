@@ -7,23 +7,43 @@ import type { ParsedContent, QueryBuilderParams } from '@nuxt/content/dist/runti
 
 import type { FeedmeRSSOptions, FeedRSSRoute } from './types'
 
+export type ParsedContentAlias = string
+export type ParsedContentMap = [string, (source: string) => any]
+export interface ParsedContentMapping
+  extends Partial<Record<keyof Item, ParsedContentAlias | ParsedContentMap>> {
+}
+
+type FeedmeContentTags = [string | RegExp, (() => string) | string]
+
 export interface FeedmeRSSContentOptions extends FeedmeRSSOptions {
+  feed?: {
+    baseUrl?: (() => string) | string
+    defaults?: Partial<FeedOptions> & { categories?: string[] }
+  }
+
+  item?: {
+    mapping?: ParsedContentMapping & { root?: string }
+    query?: QueryBuilderParams
+    defaults?: Partial<Item>
+  }
+
+  tags?: [(string | RegExp), (((source: string) => string) | string)][]
+
   /**
-   * The root key in ParsedContent. By default root is equals to object root
+   * Set to true when content processing required for this feed
    */
-  key?: string
-
-  authors?: Author[]
-  categories?: string[]
-  feed?: FeedOptions
-  item?: Partial<Item>
-
-  baseUrl?: string
-  query?: QueryBuilderParams
   content?: true
 }
 
-export interface FeedmeModuleContentOptions extends FeedmeRSSContentOptions {
+export interface FeedmeModuleContentOptions
+  extends Omit<FeedmeRSSContentOptions, 'content'> {
+    /**
+     * The alternative way to use content processing by match route.
+     * The feeds with `content` property are not passed to this function.
+     *
+     * @returns Any value that will be used as `!!any`
+     */
+    match?: (route: string) => any
 }
 
 export interface NitroFeedmeContentBeforeOptions {
