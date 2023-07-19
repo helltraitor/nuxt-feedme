@@ -14,15 +14,16 @@ export interface FeedmeRSSContentOptions extends FeedmeRSSOptions {
   key?: string
 
   authors?: Author[]
-  category?: Category[]
+  categories?: string[]
   feed?: FeedOptions
+  item?: Partial<Item>
 
   baseUrl?: string
   query?: QueryBuilderParams
+  content?: true
 }
 
-export interface FeedmeModuleContentOptions {
-  content?: FeedRSSContentOptions
+export interface FeedmeModuleContentOptions extends FeedmeRSSContentOptions {
 }
 
 export interface NitroFeedmeContentBeforeOptions {
@@ -33,6 +34,7 @@ export interface NitroFeedmeContentBeforeOptions {
     create: (options: FeedOptions) => Feed
     invoke: () => Feed | undefined
     feedme: FeedRSSContentOptions
+    content: FeedmeModuleContentOptions
   }
 }
 
@@ -45,6 +47,7 @@ export interface NitroFeedmeContentItemOptions {
     invoke: () => Item | undefined
     parsed: ParsedContent
     feedme: FeedmeRSSContentOptions
+    content: FeedmeModuleContentOptions
   }
 }
 
@@ -55,6 +58,7 @@ export interface NitroFeedmeContentAfterOptions {
   feed: {
     invoke: () => Feed
     feedme: FeedmeRSSContentOptions
+    content: FeedmeModuleContentOptions
   }
 }
 
