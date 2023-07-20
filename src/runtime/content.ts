@@ -14,7 +14,7 @@ export const mergeFeedmeContentOptions = (...variants: FeedmeContentOptions[]): 
      *   self - once when empty
      */
     merged.feed ??= {}
-    merged.feed.defaults ??= { ...variant.feed?.defaults, ...merged.feed?.defaults }
+    merged.feed.defaults = { ...variant.feed?.defaults, ...merged.feed?.defaults }
 
     /**
      * ITEM
@@ -24,8 +24,8 @@ export const mergeFeedmeContentOptions = (...variants: FeedmeContentOptions[]): 
      *   query - once when empty
      */
     merged.item ??= {}
-    merged.item.defaults ??= { ...variant.item?.defaults, ...merged.item?.defaults }
-    merged.item.mapping ??= { ...variant.item?.mapping, ...merged.item?.mapping }
+    merged.item.defaults = { ...variant.item?.defaults, ...merged.item?.defaults }
+    merged.item.mapping = { ...variant.item?.mapping, ...merged.item?.mapping }
     merged.item.query ??= variant.item?.query
 
     /**
