@@ -1,8 +1,6 @@
 import type { FeedOptions, Item } from 'feed'
 import { Feed, type FeedOptions, type Item } from 'feed'
 
-interface CreateFeedFromOptions {
-  baseUrl: string
 import type { FeedmeContentOptions } from '../content'
 
 export const mergeFeedmeContentOptions = (...variants: FeedmeContentOptions[]): FeedmeContentOptions => {
@@ -65,7 +63,6 @@ export const replaceValueTags = <T extends object>(target: T, tags: FeedmeConten
   return target
 }
 
-}
 
 export const createFeedFrom = (options: CreateFeedFromOptions, ...variants: Partial<Record<keyof FeedOptions, any>>[]): FeedOptions => {
   // no updated (to Date), no author (object), no feedLinks (array)
