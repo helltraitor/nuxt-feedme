@@ -72,83 +72,32 @@ export const createFeedFrom = (options: FeedmeContentOptions): Feed => {
   return feed
 }
 
-interface CreateItemFromOptions {
-  baseUrl: string
+export const getItemOptionsFrom = (parsed: Record<string, any>, mapping: ParsedContentMapping): Partial<Item> => {
+  const getValueByPath = (target: any, path: string): any => {
+    for (const part in path.split('.')) {
+      if (typeof target !== 'object')
+        return undefined
+      target = target[part]
+    }
+    return target
+  }
+
+  const selected: Partial<Item> = {}
+
+  for (const key in mapping) {
+    const alias = mapping[key as keyof Item]!
+    const [path, map] = typeof alias === 'string' ? [alias, (x: any) => x] : alias
+    selected[key as keyof Item] = map(getValueByPath(parsed, path))
+  }
+
+  // selected.date = selected.date ? new Date(selected.date) : undefined
+  // selected.published = selected.published ? new Date(selected.published) : undefined
+
+  return selected
 }
 
-export const createItemFrom = (options: CreateItemFromOptions, ...variants: Partial<Record<keyof Item, any>>[]): Item => {
-  const itemOptionsKeys: (keyof Item)[] = [
-    'audio',
-    'content',
-    'copyright',
-    'description',
-    'enclosure',
-    'guid',
-    'id',
-    'image',
-    'title',
-    'video',
-  ]
-
-  const itemOptions: Partial<Item> = {}
-
-  for (const variant of variants) {
-    // author: Author[] (object[])
-    if (Array.isArray(variant.author)) {
-      itemOptions.author ??= (
-        variant.author
-          .filter(x => typeof x === 'object')
-      )
-    }
-
-    // category: Category[] (object[])
-    if (Array.isArray(variant.category)) {
-      itemOptions.category ??= (
-        variant.category
-          .filter(x => typeof x === 'object')
-      )
-    }
-
-    // category: Author[] (object[])
-    if (Array.isArray(variant.contributor)) {
-      itemOptions.contributor ??= (
-        variant.contributor
-          .filter(x => typeof x === 'object')
-      )
-    }
-
-    // category: Category[] (object[])
-    if (Array.isArray(variant.extensions)) {
-      itemOptions.extensions ??= (
-        variant.extensions
-          .filter(x => typeof x === 'object')
-      )
-    }
-
-    // link: url (string)
-    if (typeof variant.link === 'string')
-      itemOptions.link ??= `${options.baseUrl}${variant.link}`
-
-    // date: string | float
-    if (variant.date && !+new Date(variant.date))
-      itemOptions.date ??= new Date(variant.date)
-
-    // published: string | float
-    if (variant.published && !+new Date(variant.published))
-      itemOptions.published ??= new Date(variant.published)
-
-    // rest: string
-    for (const itemOptionsKey of itemOptionsKeys) {
-      const variantValue = variant[itemOptionsKey]
-      if (variantValue)
-        itemOptions[itemOptionsKey] ??= variantValue
-    }
-  }
-
-  return {
-    date: new Date(),
-    link: '',
-    title: 'unknown',
-    ...itemOptions,
-  }
+export const createItemFrom = (options: FeedmeContentOptions): Item => {
+  const itemOptions = replaceValueTags(options.item ?? {}, options.tags ?? [])
+  const item: Item = { date: new Date(), link: '', title: '', ...itemOptions }
+  return item
 }
