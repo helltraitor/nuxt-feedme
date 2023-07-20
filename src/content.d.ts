@@ -13,7 +13,7 @@ export interface ParsedContentMapping
   extends Partial<Record<keyof Item, ParsedContentAlias | ParsedContentMap>> {
 }
 
-type FeedmeContentTags = [string | RegExp, (() => string) | string]
+export type FeedmeContentTag = [(string | RegExp), (((source: string) => string) | string)]
 
 export interface FeedmeRSSContentOptions extends FeedmeRSSOptions {
   feed?: {
@@ -27,7 +27,7 @@ export interface FeedmeRSSContentOptions extends FeedmeRSSOptions {
     defaults?: Partial<Item>
   }
 
-  tags?: [(string | RegExp), (((source: string) => string) | string)][]
+  tags?: FeedmeContentTag[]
 
   /**
    * Set to true when content processing required for this feed
