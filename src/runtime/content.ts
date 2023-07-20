@@ -97,7 +97,7 @@ export const getItemOptionsFrom = (parsed: Record<string, any>, mapping: ParsedC
 }
 
 export const createItemFrom = (options: FeedmeContentOptions): Item => {
-  const itemOptions = replaceValueTags(options.item ?? {}, options.tags ?? [])
+  const itemOptions = replaceValueTags(options.item?.defaults ?? {}, options.tags ?? [])
   const item: Item = { date: new Date(), link: '', title: '', ...itemOptions }
   return item
 }
