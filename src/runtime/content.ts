@@ -74,7 +74,7 @@ export const createFeedFrom = (options: FeedmeContentOptions): Feed => {
 
 export const getItemOptionsFrom = (parsed: Record<string, any>, mapping: ParsedContentMapping): Partial<Item> => {
   const getValueByPath = (target: any, path: string): any => {
-    for (const part in path.split('.')) {
+    for (const part of path.split('.')) {
       if (typeof target !== 'object')
         return undefined
       target = target[part]
