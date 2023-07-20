@@ -39,6 +39,32 @@ export const mergeFeedmeContentOptions = (...variants: FeedmeContentOptions[]): 
   return merged
 }
 
+export const replaceValueTags = <T extends object>(target: T, tags: FeedmeContentTag[]): T => {
+  const replaceValueTagsFor = (target: string, tags: FeedmeContentTag[]): string => {
+    for (const [match, value] of tags) {
+      target = target.replace(
+        match,
+        typeof value === 'function' ? value(target) : value,
+      )
+    }
+    return target
+  }
+
+  const replaced: Partial<T> = {}
+
+  for (const [key, value] of Object.entries(target)) {
+    replaced[key as keyof T] = (
+      typeof value === 'string'
+        ? replaceValueTagsFor(value, tags)
+        : typeof value === 'object'
+          ? replaceValueTags(value, tags)
+          : value
+    )
+  }
+
+  return target
+}
+
 }
 
 export const createFeedFrom = (options: CreateFeedFromOptions, ...variants: Partial<Record<keyof FeedOptions, any>>[]): FeedOptions => {
