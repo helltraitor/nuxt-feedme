@@ -8,7 +8,7 @@ import type { ParsedContent, QueryBuilderParams } from '@nuxt/content/dist/runti
 import type { FeedmeRSSOptions, FeedRSSRoute } from './types'
 
 export type ParsedContentAlias = string
-export type ParsedContentMap = [string, (source: string) => any]
+export type ParsedContentMap = [string, (source: any) => any]
 export interface ParsedContentMapping
   extends Partial<Record<keyof Item, ParsedContentAlias | ParsedContentMap>> {
 }
