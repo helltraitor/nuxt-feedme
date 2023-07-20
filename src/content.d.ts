@@ -7,11 +7,9 @@ import type { ParsedContent, QueryBuilderParams } from '@nuxt/content/dist/runti
 
 import type { FeedmeRSSOptions, FeedRSSRoute } from './types'
 
-export type ParsedContentAlias = string
-export type ParsedContentMap = [string, (source: any) => any]
-export interface ParsedContentMapping
-  extends Partial<Record<keyof Item, ParsedContentAlias | ParsedContentMap>> {
-}
+export type ParsedContentSimpleAlias = string
+export type ParsedContentMappedAlias = [string, (source: any) => any]
+export type ParsedContentItems = [keyof Item, ...ParsedContentMappedAlias | [ParsedContentSimpleAlias] ]
 
 export type FeedmeContentTag = [(string | RegExp), (((source: string) => string) | string)]
 
@@ -21,7 +19,7 @@ export interface FeedmeContentOptions {
   }
 
   item?: {
-    mapping?: ParsedContentMapping
+    mapping?: ParsedContentItems[]
     query?: QueryBuilderParams
     defaults?: Partial<Item>
   }

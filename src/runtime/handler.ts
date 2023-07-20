@@ -72,7 +72,7 @@ const feedmeHandleContent = async (event: H3Event, feedme: FeedmeRSSContentOptio
     await useNitroApp().hooks.callHook(`feedme:handle:content:item[${event.path}]`, feedmeHandleContentItem)
     await useNitroApp().hooks.callHook('feedme:handle:content:item', feedmeHandleContentItem)
 
-    const feedmeItemParsedDefaults = getItemOptionsFrom(parsed, feedmeContentOptions.item?.mapping ?? {})
+    const feedmeItemParsedDefaults = getItemOptionsFrom(parsed, feedmeContentOptions.item?.mapping ?? [])
     const feedmeItemContentOptions = mergeFeedmeContentOptions(
       // Highest priority - user preferences
       { item: { defaults: maybeItem } },

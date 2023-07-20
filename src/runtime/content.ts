@@ -1,6 +1,6 @@
 import { Feed, type FeedOptions, type Item } from 'feed'
 
-import type { FeedmeContentOptions, FeedmeContentTag, ParsedContentMapping } from '../content'
+import type { FeedmeContentOptions, FeedmeContentTag, ParsedContentItems } from '../content'
 
 export const mergeFeedmeContentOptions = (...variants: FeedmeContentOptions[]): FeedmeContentOptions => {
   const merged: FeedmeContentOptions = {}
@@ -22,7 +22,7 @@ export const mergeFeedmeContentOptions = (...variants: FeedmeContentOptions[]): 
      */
     merged.item ??= {}
     merged.item.defaults = { ...variant.item?.defaults, ...merged.item?.defaults }
-    merged.item.mapping = { ...variant.item?.mapping, ...merged.item?.mapping }
+    merged.item.mapping = [...variant.item?.mapping ?? [], ...merged.item?.mapping ?? []]
     merged.item.query ??= variant.item?.query
 
     /**
@@ -72,7 +72,7 @@ export const createFeedFrom = (options: FeedmeContentOptions): Feed => {
   return feed
 }
 
-export const getItemOptionsFrom = (parsed: Record<string, any>, mapping: ParsedContentMapping): Partial<Item> => {
+export const getItemOptionsFrom = (parsed: Record<string, any>, mapping: ParsedContentItems[]): Partial<Item> => {
   const getValueByPath = (target: any, path: string): any => {
     for (const part of path.split('.')) {
       if (typeof target !== 'object')
@@ -83,11 +83,11 @@ export const getItemOptionsFrom = (parsed: Record<string, any>, mapping: ParsedC
   }
 
   const selected: Partial<Item> = {}
+  const intoSelf = (item: any) => item
 
-  for (const key in mapping) {
-    const alias = mapping[key as keyof Item]!
-    const [path, map] = typeof alias === 'string' ? [alias, (x: any) => x] : alias
-    selected[key as keyof Item] = map(getValueByPath(parsed, path))
+  for (const variant of mapping) {
+    const [key, path, map = intoSelf] = variant
+    selected[key] ??= map(getValueByPath(parsed, path))
   }
 
   // selected.date = selected.date ? new Date(selected.date) : undefined
