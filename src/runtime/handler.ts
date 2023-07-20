@@ -5,7 +5,7 @@ import type { NitroApp } from 'nitropack'
 import type { FeedmeRSSOptions } from '../types'
 import type { FeedmeModuleContentOptions, FeedmeRSSContentOptions } from '../content'
 import { getFeedmeModuleOptions, getFeedmeRSSTypeFrom, intoContentType, intoSeconds } from './feedme'
-import { createFeedFrom, createItemFrom } from './content'
+import { createFeedFrom, createItemFrom, mergeFeedmeContentOptions } from './content'
 
 import { serverQueryContent } from '#content/server'
 import { useNitroApp } from '#imports'
@@ -44,25 +44,21 @@ const feedmeHandleContent = async (event: H3Event, feedme: FeedmeRSSContentOptio
   await useNitroApp().hooks.callHook('feedme:handle:content:before', feedmeHandleContentBefore)
 
   // FEEDME:HANDLE:CONTENT:ITEM
-  const feed = (
-    feedmeHandleContentPersistent.feed
-    ?? new Feed(createFeedFrom(
-      { baseUrl: content.baseUrl ?? '' },
-      feedme.feed ?? {},
-      content.feed ?? {},
-      { ttl: intoSeconds(feedme.revisit) / 60 },
-    ))
+  const feedmeContentOptions = mergeFeedmeContentOptions(
+    feedme,
+    content,
+    {
+      feed: {
+        defaults: {
+          ttl: intoSeconds(feedme.revisit) / 60,
+        },
+      },
+    },
   )
 
-  const authors = [...feedme.authors ?? [], ...content?.authors ?? []]
-  for (const author of authors)
-    feed.addContributor(author)
+  const feed = feedmeHandleContentPersistent.feed ?? createFeedFrom(feedmeContentOptions)
 
-  const categories = [...feedme.categories ?? [], ...content?.categories ?? []]
-  for (const category of categories)
-    feed.addCategory(category)
-
-  const records = await serverQueryContent(event, feedme.query).find()
+  const records = await serverQueryContent(event, feedmeContentOptions.item?.query).find()
   for (const parsed of records) {
     let maybeItem: Item | undefined
 
