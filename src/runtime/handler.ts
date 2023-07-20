@@ -5,7 +5,7 @@ import type { NitroApp } from 'nitropack'
 import type { FeedmeRSSOptions } from '../types'
 import type { FeedmeModuleContentOptions, FeedmeRSSContentOptions } from '../content'
 import { getFeedmeModuleOptions, getFeedmeRSSTypeFrom, intoContentType, intoSeconds } from './feedme'
-import { createFeedFrom, createItemFrom, mergeFeedmeContentOptions } from './content'
+import { createFeedFrom, createItemFrom, getItemOptionsFrom, mergeFeedmeContentOptions } from './content'
 
 import { serverQueryContent } from '#content/server'
 import { useNitroApp } from '#imports'
@@ -14,27 +14,21 @@ declare module '#imports' {
   function useNitroApp(): NitroApp
 }
 
-interface FeedmeHandleContentPersistent {
-  feed?: Feed
-}
-
 const feedmeHandleContent = async (event: H3Event, feedme: FeedmeRSSContentOptions, content: FeedmeModuleContentOptions) => {
   setHeaders(event, {
     'Content-Type': intoContentType(feedme?.type ?? getFeedmeRSSTypeFrom(event.path)) ?? 'text/plain',
     'Cache-Control': `Max-Age=${intoSeconds(feedme?.revisit)}`,
   })
 
-  const feedmeHandleContentPersistent: FeedmeHandleContentPersistent = {}
-
   // FEEDME:HANDLE:CONTENT:BEFORE
+  let maybeFeedOptions: Partial<FeedOptions> | undefined
   const feedmeHandleContentBefore = {
     context: { event },
     feed: {
-      create: (options: FeedOptions) => {
-        feedmeHandleContentPersistent.feed = new Feed(options)
-        return feedmeHandleContentPersistent.feed
+      create: (options: Partial<FeedOptions>) => {
+        maybeFeedOptions = options
       },
-      invoke: () => feedmeHandleContentPersistent.feed,
+      invoke: () => maybeFeedOptions,
       feedme,
       content,
     },
@@ -44,29 +38,29 @@ const feedmeHandleContent = async (event: H3Event, feedme: FeedmeRSSContentOptio
   await useNitroApp().hooks.callHook('feedme:handle:content:before', feedmeHandleContentBefore)
 
   // FEEDME:HANDLE:CONTENT:ITEM
+  const feedmeContentDefaults: Partial<FeedOptions> = {
+    ttl: intoSeconds(feedme.revisit ?? content.revisit) / 60,
+  }
   const feedmeContentOptions = mergeFeedmeContentOptions(
+    // Highest priory - user preferences
+    { feed: { defaults: feedmeContentDefaults } },
     feedme,
     content,
-    {
-      feed: {
-        defaults: {
-          ttl: intoSeconds(feedme.revisit) / 60,
-        },
-      },
-    },
+    // Lowest priority - most specialized options
+    { feed: { defaults: feedmeContentDefaults } },
   )
 
-  const feed = feedmeHandleContentPersistent.feed ?? createFeedFrom(feedmeContentOptions)
+  const feed = createFeedFrom(feedmeContentOptions)
 
   const records = await serverQueryContent(event, feedmeContentOptions.item?.query).find()
   for (const parsed of records) {
-    let maybeItem: Item | undefined
+    let maybeItem: Partial<Item> | undefined
 
     const feedmeHandleContentItem = {
       context: { event },
       feed: {
         invoke: () => maybeItem,
-        insert: (item: Item) => {
+        insert: (item: Partial<Item>) => {
           maybeItem = item
         },
         parsed,
@@ -78,16 +72,17 @@ const feedmeHandleContent = async (event: H3Event, feedme: FeedmeRSSContentOptio
     await useNitroApp().hooks.callHook(`feedme:handle:content:item[${event.path}]`, feedmeHandleContentItem)
     await useNitroApp().hooks.callHook('feedme:handle:content:item', feedmeHandleContentItem)
 
-    const maybeKey = feedme.key ?? content.key
-    const maybeFeedme = maybeKey ? Object(parsed[maybeKey]) as Record<string, any> : parsed
+    const feedmeItemParsedDefaults = getItemOptionsFrom(parsed, feedmeContentOptions.item?.mapping ?? {})
+    const feedmeItemContentOptions = mergeFeedmeContentOptions(
+      // Highest priority - user preferences
+      { item: { defaults: maybeItem } },
+      feedme,
+      content,
+      // Lowest priority - defaults from parsed
+      { item: { defaults: feedmeItemParsedDefaults } },
+    )
 
-    feed.addItem(createItemFrom(
-      { baseUrl: content.baseUrl ?? '' },
-      maybeItem ?? {},
-      feedme.item ?? {},
-      content.item ?? {},
-      maybeFeedme ?? {},
-    ))
+    feed.addItem(createItemFrom(feedmeItemContentOptions))
   }
 
   // FEEDME:HANDLE:CONTENT:AFTER
