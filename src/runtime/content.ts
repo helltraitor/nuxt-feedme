@@ -1,7 +1,44 @@
 import type { FeedOptions, Item } from 'feed'
+import { Feed, type FeedOptions, type Item } from 'feed'
 
 interface CreateFeedFromOptions {
   baseUrl: string
+import type { FeedmeContentOptions } from '../content'
+
+export const mergeFeedmeContentOptions = (...variants: FeedmeContentOptions[]): FeedmeContentOptions => {
+  const merged: FeedmeContentOptions = {}
+
+  for (const variant of variants) {
+    /**
+     * FEED
+     *   self - once when empty
+     */
+    merged.feed ??= {}
+    merged.feed.defaults ??= { ...variant.feed?.defaults, ...merged.feed?.defaults }
+
+    /**
+     * ITEM
+     *   self - once when empty
+     *   defaults - merged (first prioritized)
+     *   mapping - merged (first prioritized)
+     *   query - once when empty
+     */
+    merged.item ??= {}
+    merged.item.defaults ??= { ...variant.item?.defaults, ...merged.item?.defaults }
+    merged.item.mapping ??= { ...variant.item?.mapping, ...merged.item?.mapping }
+    merged.item.query ??= variant.item?.query
+
+    /**
+     * TAGS
+     *  self - merged
+     */
+    merged.tags ??= []
+    merged.tags.push(...variant.tags ?? [])
+  }
+
+  return merged
+}
+
 }
 
 export const createFeedFrom = (options: CreateFeedFromOptions, ...variants: Partial<Record<keyof FeedOptions, any>>[]): FeedOptions => {
