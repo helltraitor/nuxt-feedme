@@ -21,7 +21,7 @@ export interface FeedmeContentOptions {
   }
 
   item?: {
-    mapping?: ParsedContentMapping & { root?: string }
+    mapping?: ParsedContentMapping
     query?: QueryBuilderParams
     defaults?: Partial<Item>
   }
