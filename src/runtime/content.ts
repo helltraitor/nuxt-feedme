@@ -62,68 +62,14 @@ export const replaceValueTags = <T extends object>(target: T, tags: FeedmeConten
   return target
 }
 
+export const createFeedFrom = (options: FeedmeContentOptions): Feed => {
+  const feedOptions = replaceValueTags(options.feed?.defaults ?? {}, options.tags ?? [])
+  const feed = new Feed({ copyright: '', id: '', title: '', ...feedOptions })
 
-export const createFeedFrom = (options: CreateFeedFromOptions, ...variants: Partial<Record<keyof FeedOptions, any>>[]): FeedOptions => {
-  // no updated (to Date), no author (object), no feedLinks (array)
-  const feedOptionsKeys: (keyof FeedOptions)[] = [
-    'copyright',
-    'description',
-    'docs',
-    'feed', // url?
-    'generator',
-    'hub',
-    'id',
-    'language',
-    'title',
-    'ttl',
-  ]
+  for (const category of feedOptions.categories ?? [])
+    feed.addCategory(category)
 
-  const feedOptions: Partial<FeedOptions> = {}
-
-  for (const variant of variants) {
-    // author (object)
-    if (typeof variant.author === 'object')
-      feedOptions.author ??= variant.author
-
-    // favicon: url? (string)
-    if (typeof variant.favicon === 'string')
-      feedOptions.favicon ??= `${options.baseUrl}${variant.favicon}`
-
-    // feedLinks: url[] (string[])
-    if (Array.isArray(variant.feedLinks)) {
-      feedOptions.feedLinks ??= (
-        variant.feedLinks
-          .filter(x => typeof x === 'string')
-          .map(x => `${options.baseUrl}${x}`)
-      )
-    }
-
-    // link: url (string)
-    if (typeof variant.link === 'string')
-      feedOptions.link ??= `${options.baseUrl}${variant.link}`
-
-    // link: url (string)
-    if (typeof variant.image === 'string')
-      feedOptions.link ??= `${options.baseUrl}${variant.image}`
-
-    // updated: string | float
-    if (variant.updated && !+new Date(variant.updated))
-      feedOptions.updated ??= new Date(variant.updated)
-
-    // rest: string
-    for (const feedOptionsKey of feedOptionsKeys) {
-      const variantValue = variant[feedOptionsKey]
-      if (variantValue)
-        feedOptions[feedOptionsKey] ??= variantValue
-    }
-  }
-
-  return {
-    id: 'unknown',
-    title: 'unknown',
-    copyright: 'unknown',
-    ...feedOptions,
-  }
+  return feed
 }
 
 interface CreateItemFromOptions {
