@@ -1,7 +1,6 @@
-import type { FeedOptions, Item } from 'feed'
 import { Feed, type FeedOptions, type Item } from 'feed'
 
-import type { FeedmeContentOptions } from '../content'
+import type { FeedmeContentOptions, FeedmeContentTag } from '../content'
 
 export const mergeFeedmeContentOptions = (...variants: FeedmeContentOptions[]): FeedmeContentOptions => {
   const merged: FeedmeContentOptions = {}
