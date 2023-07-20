@@ -15,9 +15,8 @@ export interface ParsedContentMapping
 
 export type FeedmeContentTag = [(string | RegExp), (((source: string) => string) | string)]
 
-export interface FeedmeRSSContentOptions extends FeedmeRSSOptions {
+export interface FeedmeContentOptions {
   feed?: {
-    baseUrl?: (() => string) | string
     defaults?: Partial<FeedOptions> & { categories?: string[] }
   }
 
@@ -28,7 +27,12 @@ export interface FeedmeRSSContentOptions extends FeedmeRSSOptions {
   }
 
   tags?: FeedmeContentTag[]
+}
 
+export interface FeedmeRSSContentOptions extends
+  FeedmeRSSOptions,
+  FeedmeContentOptions
+{
   /**
    * Set to true when content processing required for this feed
    */
