@@ -55,8 +55,8 @@ export interface NitroFeedmeContentBeforeOptions {
     event: H3Event
   }
   feed: {
-    create: (options: FeedOptions) => Feed
-    invoke: () => Feed | undefined
+    create: (options: Partial<FeedOptions>) => void
+    invoke: () => Partial<FeedOptions> | undefined
     feedme: FeedRSSContentOptions
     content: FeedmeModuleContentOptions
   }
@@ -67,8 +67,8 @@ export interface NitroFeedmeContentItemOptions {
     event: H3Event
   }
   feed: {
-    insert: (options: Item) => void
-    invoke: () => Item | undefined
+    insert: (options: Partial<Item>) => void
+    invoke: () => Partial<Item> | undefined
     parsed: ParsedContent
     feedme: FeedmeRSSContentOptions
     content: FeedmeModuleContentOptions
