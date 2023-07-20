@@ -167,16 +167,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const feedmeContent = feedme as FeedmeRSSContentOptions
-  if (
-    feedmeContent.authors
-    ?? feedmeContent.baseUrl
-    ?? feedmeContent.categories
-    ?? feedmeContent.feed
-    ?? feedmeContent.item
-    ?? feedmeContent.key
-    ?? feedmeContent.query
-    ?? feedmeContent.content
-  )
+  if (feedmeContent.content)
     return await feedmeHandleContent(event, feedme, moduleOptions.content ?? {})
 
   return await feedmeHandleDefault(event, feedme)
