@@ -38,8 +38,8 @@ export const mergeFeedmeContentOptions = (...variants: FeedmeContentOptions[]): 
   return merged
 }
 
-export const replaceValueTags = <T extends object>(target: T, tags: FeedmeContentTag[]): T => {
-  const replaceValueTagsFor = (target: string, tags: FeedmeContentTag[]): string => {
+export const replaceValueTags = <T>(target: T, tags: FeedmeContentTag[]): T => {
+  const replaceValueTagsForString = (target: string, tags: FeedmeContentTag[]): string => {
     for (const [match, value] of tags) {
       target = target.replace(
         match,
@@ -49,26 +49,23 @@ export const replaceValueTags = <T extends object>(target: T, tags: FeedmeConten
     return target
   }
 
-  const replaced: Partial<T> = {}
+  if (Array.isArray(target))
+    return target.map(item => replaceValueTags(item, tags)) as T
 
-  for (const [key, value] of Object.entries(target)) {
-    if (Array.isArray(value))
-      replaced[key as keyof T] = value.map(item => replaceValueTags(item, tags)) as T[keyof T]
+  if (target instanceof Date)
+    return target
 
-    else if (value instanceof Date)
-      replaced[key as keyof T] = new Date(replaceValueTagsFor(`${value}`, tags)) as T[keyof T]
-
-    else if (typeof value === 'object')
-      replaced[key as keyof T] = replaceValueTags(value, tags)
-
-    else if (typeof value === 'string')
-      replaced[key as keyof T] = replaceValueTagsFor(value, tags) as T[keyof T]
-
-    else
-      replaced[key as keyof T] = value
+  if (typeof target === 'object') {
+    return Object.fromEntries(
+      Object.entries(target as object)
+        .map(([key, value]) => [key, replaceValueTags(value, tags)]),
+    ) as T
   }
 
-  return replaced as T
+  if (typeof target === 'string')
+    return replaceValueTagsForString(target, tags) as T
+
+  return target
 }
 
 export const createFeedFrom = (options: FeedmeContentOptions): Feed => {
