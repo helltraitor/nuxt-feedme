@@ -14,9 +14,9 @@ export default defineNuxtModule<FeedmeModuleOptions>({
   // Default configuration options of the Nuxt module
   defaults: {
     feeds: {
-      '/feed.atom': { revisit: '6h', type: 'atom1' },
-      '/feed.xml': { revisit: '6h', type: 'rss2' },
-      '/feed.json': { revisit: '6h', type: 'json1' },
+      '/feed.atom': { revisit: '6h', type: 'atom1', content: true },
+      '/feed.xml': { revisit: '6h', type: 'rss2', content: true },
+      '/feed.json': { revisit: '6h', type: 'json1', content: true },
     },
   },
   setup(options, nuxt) {

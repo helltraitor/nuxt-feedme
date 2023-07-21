@@ -39,13 +39,6 @@ export interface FeedmeRSSContentOptions extends
 
 export interface FeedmeModuleContentOptions
   extends Omit<FeedmeRSSContentOptions, 'content'> {
-    /**
-     * The alternative way to use content processing by match route.
-     * The feeds with `content` property are not passed to this function.
-     *
-     * @returns Any value that will be used as `!!any`
-     */
-    match?: (route: string) => any
 }
 
 export interface NitroFeedmeContentBeforeOptions {
