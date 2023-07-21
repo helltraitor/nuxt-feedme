@@ -51,22 +51,22 @@ export const replaceValueTags = <T extends object>(target: T, tags: FeedmeConten
 
   for (const [key, value] of Object.entries(target)) {
     if (Array.isArray(value))
-      replaced[key as keyof T] = value.map(item => replaceValueTags(item, tags))
+      replaced[key as keyof T] = value.map(item => replaceValueTags(item, tags)) as T[keyof T]
 
     else if (value instanceof Date)
-      replaced[key as keyof T] = new Date(replaceValueTagsFor(`${value}`, tags))
+      replaced[key as keyof T] = new Date(replaceValueTagsFor(`${value}`, tags)) as T[keyof T]
 
     else if (typeof value === 'object')
       replaced[key as keyof T] = replaceValueTags(value, tags)
 
     else if (typeof value === 'string')
-      replaced[key as keyof T] = replaceValueTagsFor(value, tags)
+      replaced[key as keyof T] = replaceValueTagsFor(value, tags) as T[keyof T]
 
     else
       replaced[key as keyof T] = value
   }
 
-  return replaced
+  return replaced as T
 }
 
 export const createFeedFrom = (options: FeedmeContentOptions): Feed => {
