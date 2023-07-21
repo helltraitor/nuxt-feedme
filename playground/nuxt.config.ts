@@ -54,10 +54,3 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
 })
-
-//         },
-//         mapping: {
-//           link: ['', () => baseUrl],
-//         },
-//       },
-//
