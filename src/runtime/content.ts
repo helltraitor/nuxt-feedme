@@ -50,13 +50,20 @@ export const replaceValueTags = <T extends object>(target: T, tags: FeedmeConten
   const replaced: Partial<T> = {}
 
   for (const [key, value] of Object.entries(target)) {
-    replaced[key as keyof T] = (
-      typeof value === 'string'
-        ? replaceValueTagsFor(value, tags)
-        : typeof value === 'object'
-          ? replaceValueTags(value, tags)
-          : value
-    )
+    if (Array.isArray(value))
+      replaced[key as keyof T] = value.map(item => replaceValueTags(item, tags))
+
+    else if (value instanceof Date)
+      replaced[key as keyof T] = new Date(replaceValueTagsFor(`${value}`, tags))
+
+    else if (typeof value === 'object')
+      replaced[key as keyof T] = replaceValueTags(value, tags)
+
+    else if (typeof value === 'string')
+      replaced[key as keyof T] = replaceValueTagsFor(value, tags)
+
+    else
+      replaced[key as keyof T] = value
   }
 
   return replaced
