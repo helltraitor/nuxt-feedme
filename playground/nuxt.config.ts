@@ -37,7 +37,6 @@ export default defineNuxtConfig({
          * Tags applied at the last, when values received, but not set to feed or items yet
          *
          * Tags are applied for any root value:
-         *
          * ```
          * {
          *  link, // <-- affected
