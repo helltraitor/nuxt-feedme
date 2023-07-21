@@ -4,12 +4,12 @@ import { H3Error, type H3Event, defineEventHandler, setHeaders } from 'h3'
 import type { NitroApp } from 'nitropack'
 import type { FeedmeRSSOptions } from '../types'
 import type { FeedmeModuleContentOptions, FeedmeRSSContentOptions } from '../content'
-import { getFeedmeModuleOptions, getFeedmeRSSTypeFrom, intoContentType, intoSeconds } from './feedme'
 import { createFeedFrom, createItemFrom, getItemOptionsFrom, mergeFeedmeContentOptions } from './content'
+import { intoParsedContentTemplateMapping } from './defaults/mapping'
+import { getFeedmeModuleOptions, getFeedmeRSSTypeFrom, intoContentType, intoSeconds } from './feedme'
 
 import { serverQueryContent } from '#content/server'
 import { useNitroApp } from '#imports'
-import { intoParsedContentTemplateMapping } from '../defaults/mapping'
 
 declare module '#imports' {
   function useNitroApp(): NitroApp

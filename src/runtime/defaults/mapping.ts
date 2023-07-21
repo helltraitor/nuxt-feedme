@@ -1,6 +1,6 @@
 import type { Item } from 'feed'
 
-import type { ParsedContentItems } from '../content'
+import type { ParsedContentItems } from '../../content'
 
 const PARSED_CONTENT_KEYS: (keyof Item)[] = [
   'audio',
