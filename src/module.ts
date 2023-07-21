@@ -1,3 +1,5 @@
+import serialize from 'serialize-javascript'
+
 import { addServerPlugin, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 
 import type { FeedmeModuleOptions } from './types'
@@ -25,7 +27,7 @@ export default defineNuxtModule<FeedmeModuleOptions>({
     const feedme = addTemplate({
       filename: 'feedme.mjs',
       write: true,
-      getContents: () => `export default ${JSON.stringify(options, null, 2)}`,
+      getContents: () => `export default ${JSON.stringify({ module: serialize(options) })}`,
     })
     nuxt.options.alias['#feedme'] = new URL(feedme.dst).toString()
 
