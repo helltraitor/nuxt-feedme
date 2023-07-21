@@ -97,9 +97,6 @@ export const getItemOptionsFrom = (parsed: Record<string, any>, mapping: ParsedC
     selected[key] ??= map(getValueByPath(parsed, path))
   }
 
-  // selected.date = selected.date ? new Date(selected.date) : undefined
-  // selected.published = selected.published ? new Date(selected.published) : undefined
-
   return selected
 }
 
