@@ -19,12 +19,27 @@ export interface FeedmeContentOptions {
   }
 
   item?: {
+    /**
+     * Mapping: Item key, Path.to.field.of.parsed [, any to any map function ]
+     *
+     * Note: map function is being serialized so it's required to not to have
+     *   any references to values out of the function scope
+     */
     mapping?: ParsedContentItems[]
+    /**
+     * Creates default mapping with lowest priority and passed string as root.
+     * The root string can be same path as in mapping.
+     *
+     * True value means use use root of the parsed content
+     */
     templateRoots?: (string | true)[]
     query?: QueryBuilderParams
     defaults?: Partial<Item>
   }
 
+  /**
+   * Tags will be used for replace any string in any depth of feed and item
+   */
   tags?: FeedmeContentTag[]
 }
 

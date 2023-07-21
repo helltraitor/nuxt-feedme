@@ -69,6 +69,14 @@ export type FeedmeRevisit = FeedmeRevisitQuery | FeedmeRevisitObject
 
 export interface FeedmeRSSOptions {
   type?: FeedmeRSSType
+  /**
+   * Allowed object syntax and string syntax:
+   * ```
+   * const revisitObject: FeedmeRevisit = { days: 1, hours: 10, minutes: 9, seconds: 30 }
+   *
+   * const revisitString: FeedmeRevisit = '1d 10h 9m 30s'
+   * ```
+   */
   revisit?: FeedmeRevisit
 }
 
