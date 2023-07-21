@@ -23,6 +23,11 @@ const PARSED_CONTENT_KEYS: (keyof Item)[] = [
 ]
 
 export const intoParsedContentTemplateMapping = (root: string | true): ParsedContentItems[] => {
-  return PARSED_CONTENT_KEYS.map(
-    key => [key, root === true ? key : `${root}.${key}`])
+  return PARSED_CONTENT_KEYS.map((key) => {
+    const alias = root === true ? key : `${root}.${key}`
+    const map = key === 'date' ? [(date: string) => new Date(date)] : []
+
+    // Note: typescript is too stupid for now
+    return [key, alias, ...map] as any
+  })
 }
