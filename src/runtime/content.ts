@@ -59,7 +59,7 @@ export const replaceValueTags = <T extends object>(target: T, tags: FeedmeConten
     )
   }
 
-  return target
+  return replaced
 }
 
 export const createFeedFrom = (options: FeedmeContentOptions): Feed => {
