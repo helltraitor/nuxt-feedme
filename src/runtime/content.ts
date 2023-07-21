@@ -1,4 +1,4 @@
-import { Feed, type FeedOptions, type Item } from 'feed'
+import { Feed, type Item } from 'feed'
 
 import type { FeedmeContentOptions, FeedmeContentTag, ParsedContentItems } from '../content'
 
