@@ -47,7 +47,7 @@ export default defineNuxtConfig({
          * }
          * ```
          */
-        [/^\/.*/, source => `${baseUrl}${source}`],
+        [/^(?=\/)/, baseUrl],
       ],
       revisit: '1h',
     },
