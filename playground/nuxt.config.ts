@@ -28,7 +28,7 @@ export default defineNuxtConfig({
           link: baseUrl,
           author: { email: 'helltraitor@hotmail.com', name: 'Helltraitor' },
           categories: ['Content driven'],
-          copyright: 'CC BY-NC-SA 4.0 2023 © Helltraitor',
+          copyright: 'CC BY-NC-SA 4.0 2023 by Helltraitor',
         },
       },
       item: {
