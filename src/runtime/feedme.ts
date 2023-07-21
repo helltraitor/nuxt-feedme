@@ -51,7 +51,6 @@ export const getFeedmeRSSTypeFrom = (route: string): FeedmeRSSType | undefined =
 }
 
 export const getFeedmeModuleOptions = (): FeedmeModuleOptions => {
-  return feedme as any as FeedmeModuleOptions
   /**
    * SAFE: feedme content accessible only as private code in `.nuxt` directory
    *   so it's unsafeness is the same as for any other module
