@@ -31,6 +31,12 @@ export default defineNuxtConfig({
           copyright: 'CC BY-NC-SA 4.0 2023 © Helltraitor',
         },
       },
+      item: {
+        mapping: [
+          ['link', '_path'],
+        ],
+        templateRoots: [true, 'feedme'],
+      },
       tags: [
         /**
          * Replace all strings that starts with `/.*` with by `base/.*`

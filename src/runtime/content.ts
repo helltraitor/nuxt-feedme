@@ -18,11 +18,13 @@ export const mergeFeedmeContentOptions = (...variants: FeedmeContentOptions[]): 
      *   self - once when empty
      *   defaults - merged (first prioritized)
      *   mapping - merged (first prioritized)
+     *   templateRoots - once when empty
      *   query - once when empty
      */
     merged.item ??= {}
     merged.item.defaults = { ...variant.item?.defaults, ...merged.item?.defaults }
     merged.item.mapping = [...variant.item?.mapping ?? [], ...merged.item?.mapping ?? []]
+    merged.item.templateRoots ??= variant.item?.templateRoots
     merged.item.query ??= variant.item?.query
 
     /**

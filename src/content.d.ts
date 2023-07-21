@@ -20,6 +20,7 @@ export interface FeedmeContentOptions {
 
   item?: {
     mapping?: ParsedContentItems[]
+    templateRoots?: (string | true)[]
     query?: QueryBuilderParams
     defaults?: Partial<Item>
   }

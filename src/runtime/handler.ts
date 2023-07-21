@@ -9,6 +9,7 @@ import { createFeedFrom, createItemFrom, getItemOptionsFrom, mergeFeedmeContentO
 
 import { serverQueryContent } from '#content/server'
 import { useNitroApp } from '#imports'
+import { intoParsedContentTemplateMapping } from '../defaults/mapping'
 
 declare module '#imports' {
   function useNitroApp(): NitroApp
@@ -72,7 +73,17 @@ const feedmeHandleContent = async (event: H3Event, feedme: FeedmeRSSContentOptio
     await useNitroApp().hooks.callHook(`feedme:handle:content:item[${event.path}]`, feedmeHandleContentItem)
     await useNitroApp().hooks.callHook('feedme:handle:content:item', feedmeHandleContentItem)
 
-    const feedmeItemParsedDefaults = getItemOptionsFrom(parsed, feedmeContentOptions.item?.mapping ?? [])
+    // Due to circular connection, content mapping must be prepared separately
+    const extendedFeedmeContentMapping = [
+      ...feedmeContentOptions.item?.mapping ?? [],
+      ...(
+        feedme.item?.templateRoots
+        ?? content.item?.templateRoots
+        ?? []
+      ).flatMap(intoParsedContentTemplateMapping),
+    ]
+
+    const feedmeItemParsedDefaults = getItemOptionsFrom(parsed, extendedFeedmeContentMapping)
     const feedmeItemContentOptions = mergeFeedmeContentOptions(
       // Highest priority - user preferences
       { item: { defaults: maybeItem } },

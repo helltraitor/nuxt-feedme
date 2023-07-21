@@ -20,6 +20,11 @@ export default defineNuxtModule<FeedmeModuleOptions>({
       '/feed.xml': { revisit: '6h', type: 'rss2', content: true },
       '/feed.json': { revisit: '6h', type: 'json1', content: true },
     },
+    content: {
+      item: {
+        templateRoots: [true, 'feedme'],
+      },
+    },
   },
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
