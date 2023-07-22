@@ -1,11 +1,10 @@
 import type { H3Event } from 'h3'
 
-import type { Feed, FeedOptions, Item, Author} from 'feed'
-import type { Category } from 'feed/lib/typings'
+import type { Feed, FeedOptions, Item} from 'feed'
 
 import type { ParsedContent, QueryBuilderParams } from '@nuxt/content/dist/runtime/types'
 
-import type { FeedmeRSSOptions, FeedRSSRoute } from './types'
+import type { FeedmeRSSOptions } from './types'
 
 export type ParsedContentSimpleAlias = string
 export type ParsedContentMappedAlias = [string, (source: any) => any]
