@@ -106,6 +106,8 @@ to the path in parsed content:
 the next map for the date field: `value => value ? new Date(value) : new Date()`
 So in case when you provide your own alias for date - you need to provide map function
 
+**NOTE**: The mapping function is serialized so its required to not to have any references in outer scopes
+
 ### Tags
 
 Tags allow to replace node values according to match:
