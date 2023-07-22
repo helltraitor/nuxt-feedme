@@ -1,6 +1,6 @@
 import serialize from 'serialize-javascript'
 
-import { addServerPlugin, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 
 import type { FeedmeModuleOptions } from './types'
 
