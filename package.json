@@ -6,6 +6,13 @@
   "description": "The RSS feed module for Nuxt web framework",
   "license": "MIT",
   "repository": "helltraitor/nuxt-feedme",
+  "keywords": [
+    "content",
+    "feed",
+    "nuxt",
+    "nuxt-module",
+    "rss"
+  ],
   "exports": {
     ".": {
       "types": "./dist/types.d.ts",
