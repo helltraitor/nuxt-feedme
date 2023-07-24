@@ -32,6 +32,7 @@
     "@nuxt/content": "^2.7.0",
     "@nuxt/kit": "^3.6.3",
     "feed": "^4.2.2",
+    "file-url": "^4.0.0",
     "h3": "^1.7.1",
     "serialize-javascript": "^6.0.1"
   },
@@ -42,6 +43,7 @@
     "@nuxt/module-builder": "^0.4.0",
     "@nuxt/schema": "^3.6.3",
     "@nuxt/test-utils": "^3.6.3",
+    "@types/file-url": "^3.0.2",
     "@types/node": "^18.16.19",
     "@types/serialize-javascript": "^5.0.2",
     "changelogen": "^0.5.4",
