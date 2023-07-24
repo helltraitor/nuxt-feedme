@@ -1,6 +1,24 @@
 # Changelog
 
 
+## v0.1.2...main
+
+[compare changes](https://undefined/undefined/compare/v0.1.0...main)
+
+### 🚀 Enhancements
+
+- Package version now comes from json (70566b2)
+
+### 🩹 Fixes
+
+- Removed unused imports (58c7837)
+- Changelogen temporary removed (3ba58d7)
+- Invalid url on linux machine (51b20f3)
+
+### ❤️  Contributors
+
+- Helltraitor ([@helltraitor](http://github.com/helltraitor))
+
 ## v0.1.0
 
 
