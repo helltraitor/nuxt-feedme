@@ -3,6 +3,8 @@ import serialize from 'serialize-javascript'
 
 import { addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 
+import pkg from '../package.json'
+
 import type { FeedmeModuleOptions } from './types'
 
 export default defineNuxtModule<FeedmeModuleOptions>({
@@ -12,7 +14,7 @@ export default defineNuxtModule<FeedmeModuleOptions>({
     compatibility: {
       nuxt: '^3.0.0',
     },
-    version: '0.0.1',
+    version: pkg.version,
   },
   // Default configuration options of the Nuxt module
   defaults: {
