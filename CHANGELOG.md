@@ -1,9 +1,30 @@
 # Changelog
 
 
-## v0.1.2...main
+## v0.1.2...v0.1.3
 
-[compare changes](https://undefined/undefined/compare/v0.1.0...main)
+[compare changes](https://undefined/undefined/compare/v0.1.2...v0.1.3)
+
+### 🚀 Enhancements
+
+- Package keywords (59e1dd8)
+- Extra example (a26ec4e)
+
+### 🩹 Fixes
+
+- Updated README.md links (28105bf)
+
+### 🏡 Chore
+
+- **release:** V0.1.3 (f9ebbfb)
+
+### ❤️  Contributors
+
+- Helltraitor ([@helltraitor](http://github.com/helltraitor))
+
+## v0.1.0...v0.1.2
+
+[compare changes](https://undefined/undefined/compare/v0.1.0...v0.1.2)
 
 ### 🚀 Enhancements
 
@@ -14,6 +35,10 @@
 - Removed unused imports (58c7837)
 - Changelogen temporary removed (3ba58d7)
 - Invalid url on linux machine (51b20f3)
+
+### 🏡 Chore
+
+- **release:** V0.1.2 (21841db)
 
 ### ❤️  Contributors
 
