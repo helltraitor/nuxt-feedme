@@ -63,7 +63,7 @@ export interface NitroFeedmeContentBeforeOptions {
   feed: {
     create: (options: Partial<FeedOptions>) => void
     invoke: () => Partial<FeedOptions> | undefined
-    feedme: FeedRSSContentOptions
+    feedme: FeedmeRSSContentOptions
     content: FeedmeModuleContentOptions
   }
 }
