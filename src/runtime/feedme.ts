@@ -1,7 +1,6 @@
 import type { FeedmeModuleOptions, FeedmeRSSContentType, FeedmeRSSType, FeedmeRevisit, FeedmeRevisitObject } from '../types'
 
 import { useRuntimeConfig } from "#imports"
-import feedme from '#feedme'
 
 export const intoSeconds = (feedRevisit: FeedmeRevisit | undefined): number => {
   const EXTRACT = /((?<days>\d+)d)?(\s?(?<hours>\d+)h)?(\s?(?<minutes>\d+)m)?(\s?(?<seconds>\d+)s)?/
