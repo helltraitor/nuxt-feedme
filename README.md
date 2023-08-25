@@ -90,14 +90,27 @@ to the path in parsed content:
 ```ts
 {
   item: {
-    // Third item is optional mapping function
-    ['date', 'modified', value => value ? new Date(value) : value],
-    // When mapping function result is undefined - next variant applied
-    ['date', 'created', value => value ? new Date(value) : value],
-    // Until the real one value will be set
-    ['date', '', () => new Date()],
-    // By default mapping is x => x
-    ['link', '_path'],
+    mapping: [
+      // Third item is optional mapping function
+      ['date', 'modified', value => value ? new Date(value) : value],
+      // When mapping function result is undefined - next variant applied
+      ['date', 'created', value => value ? new Date(value) : value],
+      // Until the real one value will be set
+      ['date', '', () => new Date()],
+      // By default mapping is x => x
+      ['link', '_path'],
+    ],
+    // Create default mappings with indicated roots:
+    //   [keyof Item /* such as image, id, link */, root + keyof Item]
+    //
+    // The true value means use empty root:
+    //   ['link', 'link']
+    //
+    // Where any other key means use this as path to value:
+    //  ['link', `{root}.link`]
+    //
+    // Root can be separate by `.` which allows to deep invoking
+    templateRoots: [true, 'feedme'],
   }
 }
 ```
