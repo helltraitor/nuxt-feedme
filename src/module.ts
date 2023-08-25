@@ -36,7 +36,8 @@ export default defineNuxtModule<FeedmeModuleOptions>({
       write: true,
       getContents: () => `export default ${JSON.stringify({ module: serialize(options) })}`,
     })
-    nuxt.options.alias['#feedme'] = feedme.dst
+
+    nuxt.options.runtimeConfig.feedme = serialize(options)
 
     nuxt.hook('nitro:config', (config) => {
       for (const route in options.feeds) {

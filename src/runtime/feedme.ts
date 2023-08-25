@@ -1,5 +1,6 @@
 import type { FeedmeModuleOptions, FeedmeRSSContentType, FeedmeRSSType, FeedmeRevisit, FeedmeRevisitObject } from '../types'
 
+import { useRuntimeConfig } from "#imports"
 import feedme from '#feedme'
 
 export const intoSeconds = (feedRevisit: FeedmeRevisit | undefined): number => {
@@ -56,5 +57,5 @@ export const getFeedmeModuleOptions = (): FeedmeModuleOptions => {
    *   so it's unsafeness is the same as for any other module
    */
   // eslint-disable-next-line no-eval
-  return eval(`(${feedme.module})`) as any as FeedmeModuleOptions
+  return eval(`(${useRuntimeConfig().feedme})`) as any as FeedmeModuleOptions
 }
