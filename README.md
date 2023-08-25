@@ -58,7 +58,7 @@ export default (nitroApp: NitroApp) => {
       // Invoke in case if item was created by another callback
       const maybeItemOptions = invoke()
 
-      // Insert replace current item configuration
+      // Insert replaces current item configuration
       insert({
         ...maybeItemOptions,
         category: [
