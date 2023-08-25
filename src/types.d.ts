@@ -1,6 +1,5 @@
 import './content'
 import './feedme'
-import './virtual'
 
 import type { FeedmeRSSContentOptions, FeedmeModuleContentOptions } from './content'
 

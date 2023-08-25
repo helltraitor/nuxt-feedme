@@ -1,6 +1,6 @@
 import type { FeedmeModuleOptions, FeedmeRSSContentType, FeedmeRSSType, FeedmeRevisit, FeedmeRevisitObject } from '../types'
 
-import feedme from '#feedme'
+import { useRuntimeConfig } from "#imports"
 
 export const intoSeconds = (feedRevisit: FeedmeRevisit | undefined): number => {
   const EXTRACT = /((?<days>\d+)d)?(\s?(?<hours>\d+)h)?(\s?(?<minutes>\d+)m)?(\s?(?<seconds>\d+)s)?/
@@ -56,5 +56,5 @@ export const getFeedmeModuleOptions = (): FeedmeModuleOptions => {
    *   so it's unsafeness is the same as for any other module
    */
   // eslint-disable-next-line no-eval
-  return eval(`(${feedme.module})`) as any as FeedmeModuleOptions
+  return eval(`(${useRuntimeConfig().feedme})`) as any as FeedmeModuleOptions
 }
