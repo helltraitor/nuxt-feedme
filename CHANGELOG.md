@@ -1,6 +1,27 @@
 # Changelog
 
 
+## v0.1.3...v0.1.4
+
+[compare changes](https://github.com/helltraitor/nuxt-feedme/compare/v0.1.3...v0.1.4)
+
+### 🩹 Fixes
+
+- Incorrect type name ([95f69c1](https://github.com/helltraitor/nuxt-feedme/commit/95f69c1))
+- ⚠️  Removed file-url package ([7535a7b](https://github.com/helltraitor/nuxt-feedme/commit/7535a7b))
+
+### 🏡 Chore
+
+- **release:** V0.1.4 ([07eed92](https://github.com/helltraitor/nuxt-feedme/commit/07eed92))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Removed file-url package ([7535a7b](https://github.com/helltraitor/nuxt-feedme/commit/7535a7b))
+
+### ❤️ Contributors
+
+- Helltraitor ([@helltraitor](http://github.com/helltraitor))
+
 ## v0.1.2...v0.1.3
 
 [compare changes](https://undefined/undefined/compare/v0.1.2...v0.1.3)
