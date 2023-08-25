@@ -1,6 +1,6 @@
 import serialize from 'serialize-javascript'
 
-import { addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { createResolver, defineNuxtModule } from '@nuxt/kit'
 
 import pkg from '../package.json'
 
@@ -30,12 +30,6 @@ export default defineNuxtModule<FeedmeModuleOptions>({
   },
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
-
-    const feedme = addTemplate({
-      filename: 'feedme.mjs',
-      write: true,
-      getContents: () => `export default ${JSON.stringify({ module: serialize(options) })}`,
-    })
 
     nuxt.options.runtimeConfig.feedme = serialize(options)
 
