@@ -54,7 +54,6 @@ export default defineNuxtModule<FeedmeModuleOptions>({
       references.push({ path: resolver.resolve('./content.d.ts') })
       references.push({ path: resolver.resolve('./feedme.d.ts') })
       references.push({ path: resolver.resolve('./types.d.ts') })
-      references.push({ path: resolver.resolve('./virtual.d.ts') })
     })
   },
 })
