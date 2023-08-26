@@ -3,7 +3,7 @@
 
 ## v0.1.4...v0.1.5
 
-[compare changes](https://undefined/undefined/compare/v0.1.4...v0.1.5)
+[compare changes](https://github.com/helltraitor/nuxt-feedme/compare/v0.1.4...v0.1.5)
 
 ### 🚀 Enhancements
 
