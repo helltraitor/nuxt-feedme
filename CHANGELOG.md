@@ -1,6 +1,32 @@
 # Changelog
 
 
+## v0.1.4...v0.1.5
+
+[compare changes](https://undefined/undefined/compare/v0.1.4...v0.1.5)
+
+### 🚀 Enhancements
+
+- Removed feedme module declaration (1e4081e)
+- Merge pull request #5 from helltraitor/fix/no-virtual-feedme (#5)
+
+### 🩹 Fixes
+
+- Virtual module feedme no longer used (9600148)
+- Virtual feedme module no longer used (3a4cb50)
+- Feedme file no longer creates (361c51e)
+- Removed types reference (3880ce3)
+- Minor grammar for readme (6d1e5f0)
+- Incorrect item usage (81d1458)
+
+### 🏡 Chore
+
+- **release:** V0.1.5 (bb97a06)
+
+### ❤️ Contributors
+
+- Helltraitor ([@helltraitor](http://github.com/helltraitor))
+
 ## v0.1.3...v0.1.4
 
 [compare changes](https://github.com/helltraitor/nuxt-feedme/compare/v0.1.3...v0.1.4)
@@ -39,7 +65,7 @@
 
 - **release:** V0.1.3 (f9ebbfb)
 
-### ❤️  Contributors
+### ❤️ Contributors
 
 - Helltraitor ([@helltraitor](http://github.com/helltraitor))
 
@@ -61,7 +87,7 @@
 
 - **release:** V0.1.2 (21841db)
 
-### ❤️  Contributors
+### ❤️ Contributors
 
 - Helltraitor ([@helltraitor](http://github.com/helltraitor))
 
@@ -189,7 +215,7 @@
 - ⚠️  Multiple call hook resolved (e052f2d)
 - ⚠️  Removed root key (40716f5)
 
-### ❤️  Contributors
+### ❤️ Contributors
 
 - Helltraitor ([@helltraitor](http://github.com/helltraitor))
 
