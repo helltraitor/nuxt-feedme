@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v1.0.0
+
+[compare changes](https://github.com/helltraitor/nuxt-feedme/compare/v0.1.5...v1.0.0)
+
+### 🩹 Fixes
+
+- Incorrect link ([4218ae5](https://github.com/helltraitor/nuxt-feedme/commit/4218ae5))
+- Changelog version headings ([e87e023](https://github.com/helltraitor/nuxt-feedme/commit/e87e023))
+
+### 🏡 Chore
+
+- Updated dependencies ([5d3b87e](https://github.com/helltraitor/nuxt-feedme/commit/5d3b87e))
+
+### ❤️ Contributors
+
+- Helltraitor ([@helltraitor](http://github.com/helltraitor))
+
 ## v0.1.5
 
 [compare changes](https://github.com/helltraitor/nuxt-feedme/compare/v0.1.4...v0.1.5)
