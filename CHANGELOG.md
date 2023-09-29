@@ -1,7 +1,7 @@
 # Changelog
 
 
-## v0.1.4...v0.1.5
+## v0.1.5
 
 [compare changes](https://github.com/helltraitor/nuxt-feedme/compare/v0.1.4...v0.1.5)
 
@@ -27,7 +27,7 @@
 
 - Helltraitor ([@helltraitor](http://github.com/helltraitor))
 
-## v0.1.3...v0.1.4
+## v0.1.4
 
 [compare changes](https://github.com/helltraitor/nuxt-feedme/compare/v0.1.3...v0.1.4)
 
@@ -48,7 +48,7 @@
 
 - Helltraitor ([@helltraitor](http://github.com/helltraitor))
 
-## v0.1.2...v0.1.3
+## v0.1.3
 
 [compare changes](https://undefined/undefined/compare/v0.1.2...v0.1.3)
 
@@ -69,7 +69,7 @@
 
 - Helltraitor ([@helltraitor](http://github.com/helltraitor))
 
-## v0.1.0...v0.1.2
+## v0.1.2
 
 [compare changes](https://undefined/undefined/compare/v0.1.0...v0.1.2)
 
