@@ -145,11 +145,7 @@ Tags allow to replace node values according to match:
 Use your favorite package manager (I prefer yarn)
 
 ```bash
-yarn add -D nuxt-feedme
-
-pnpm add -D nuxt-feedme
-
-npm install --save-dev nuxt-feedme
+npx nuxi@latest module add nuxt-feedme
 ```
 
 2. Add `nuxt-feedme` to the `modules` section of `nuxt.config.ts`
