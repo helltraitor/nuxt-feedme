@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.0.1
+
+[compare changes](https://github.com/helltraitor/nuxt-feedme/compare/v1.0.0...v1.0.1)
+
+### 🚀 Enhancements
+
+- Bundler resolution ([4db1287](https://github.com/helltraitor/nuxt-feedme/commit/4db1287))
+
+### 🏡 Chore
+
+- Indicate compatibility with new v4 major ([f6700f8](https://github.com/helltraitor/nuxt-feedme/commit/f6700f8))
+- Update to latest @nuxt/module-builder ([3031107](https://github.com/helltraitor/nuxt-feedme/commit/3031107))
+- **docs:** Nuxi module add as way to install package ([f7d8e25](https://github.com/helltraitor/nuxt-feedme/commit/f7d8e25))
+
+### ❤️ Contributors
+
+- Helltraitor ([@helltraitor](http://github.com/helltraitor))
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
 
 ## v1.0.0
 
