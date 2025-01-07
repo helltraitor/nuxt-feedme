@@ -4,7 +4,7 @@ import { createResolver, defineNuxtModule } from '@nuxt/kit'
 
 import pkg from '../package.json'
 
-import type { FeedmeModuleOptions } from './types'
+import type { FeedmeModuleOptions } from './types.js'
 
 export default defineNuxtModule<FeedmeModuleOptions>({
   meta: {
