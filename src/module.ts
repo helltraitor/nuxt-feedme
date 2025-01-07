@@ -11,7 +11,7 @@ export default defineNuxtModule<FeedmeModuleOptions>({
     name: 'nuxt-feedme',
     configKey: 'feedme',
     compatibility: {
-      nuxt: '^3.0.0',
+      nuxt: '>=3.0.0',
     },
     version: pkg.version,
   },
