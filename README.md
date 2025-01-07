@@ -152,6 +152,12 @@ pnpm add -D nuxt-feedme
 npm install --save-dev nuxt-feedme
 ```
 
+Or install it via `nuxi module`
+
+```bash
+npx nuxi@latest module add nuxt-feedme
+```
+
 2. Add `nuxt-feedme` to the `modules` section of `nuxt.config.ts`
 
 ```js
