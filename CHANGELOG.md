@@ -8,6 +8,10 @@
 
 - Bundler resolution ([4db1287](https://github.com/helltraitor/nuxt-feedme/commit/4db1287))
 
+### 🩹 Fixes
+
+- Incorrect type import for new bundler ([cb87529](https://github.com/helltraitor/nuxt-feedme/commit/cb87529))
+
 ### 🏡 Chore
 
 - Indicate compatibility with new v4 major ([f6700f8](https://github.com/helltraitor/nuxt-feedme/commit/f6700f8))
