@@ -1,13 +1,3 @@
-import './content'
-import './feedme'
-
-import type { FeedmeRSSContentOptions, FeedmeModuleContentOptions } from './content'
-
-export type FeedmeRSSRoute = string
-
-export type FeedmeRSSContentType = 'application/json' | 'application/atom+xml' | 'application/rss+xml'
-export type FeedmeRSSType = 'json1' | 'atom1' | 'rss2'
-
 export interface FeedmeRevisitObject {
   seconds?: number
   minutes?: number
@@ -65,23 +55,5 @@ export type FeedmeRevisitQuery = (
 )
 
 export type FeedmeRevisit = FeedmeRevisitQuery | FeedmeRevisitObject
-
-export interface FeedmeRSSOptions {
-  type?: FeedmeRSSType
-  /**
-   * Allowed object syntax and string syntax:
-   * ```
-   * const revisitObject: FeedmeRevisit = { days: 1, hours: 10, minutes: 9, seconds: 30 }
-   *
-   * const revisitString: FeedmeRevisit = '1d 10h 9m 30s'
-   * ```
-   */
-  revisit?: FeedmeRevisit
-}
-
-export interface FeedmeModuleOptions {
-  feeds: Record<FeedmeRSSRoute, FeedmeRSSContentOptions | FeedmeRSSOptions | undefined>
-  content?: FeedmeModuleContentOptions
-}
 
 export {}

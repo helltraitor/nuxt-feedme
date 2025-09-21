@@ -1,11 +1,16 @@
-import type { FeedmeModuleOptions, FeedmeRSSContentType, FeedmeRSSType, FeedmeRevisit, FeedmeRevisitObject } from '../types'
+import type { FeedmeRevisit, FeedmeRevisitObject } from '../types/revisit'
+import type { FeedmeModuleOptions, FeedmeRSSContentType, FeedmeRSSType } from '../types'
 
-import { useRuntimeConfig } from "#imports"
+import { useRuntimeConfig } from '#imports'
 
 export const intoSeconds = (feedRevisit: FeedmeRevisit | undefined): number => {
   const EXTRACT = /((?<days>\d+)d)?(\s?(?<hours>\d+)h)?(\s?(?<minutes>\d+)m)?(\s?(?<seconds>\d+)s)?/
 
-  let revisit = feedRevisit as FeedmeRevisitObject | undefined
+  if (!feedRevisit) {
+    return 6 * 60 * 60
+  }
+
+  let revisit = feedRevisit as FeedmeRevisitObject
   if (typeof feedRevisit === 'string') {
     const extracted = feedRevisit.match(EXTRACT)?.groups ?? { hours: '24' }
     revisit = {
@@ -22,8 +27,6 @@ export const intoSeconds = (feedRevisit: FeedmeRevisit | undefined): number => {
     + (revisit?.hours ?? 0) * 60 * 60
     + (revisit?.minutes ?? 0) * 60
     + (revisit?.seconds ?? 0)
-    // Or 6h if 0s
-    || 6 * 60 * 60
   )
 }
 
@@ -51,10 +54,7 @@ export const getFeedmeRSSTypeFrom = (route: string): FeedmeRSSType | undefined =
 }
 
 export const getFeedmeModuleOptions = (): FeedmeModuleOptions => {
-  /**
-   * SAFE: feedme content accessible only as private code in `.nuxt` directory
-   *   so it's unsafeness is the same as for any other module
-   */
-  // eslint-disable-next-line no-eval
-  return eval(`(${useRuntimeConfig().feedme})`) as any as FeedmeModuleOptions
+  return useRuntimeConfig().public.feedme as FeedmeModuleOptions
 }
+
+export {}

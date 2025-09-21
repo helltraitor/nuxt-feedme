@@ -1,59 +1,87 @@
-import serialize from 'serialize-javascript'
+import type { NitroEventHandler } from 'nitropack'
 
-import { createResolver, defineNuxtModule } from '@nuxt/kit'
+import { deepmerge } from 'deepmerge-ts'
+import { defineNuxtModule, createResolver, addTypeTemplate, addServerHandler, addPrerenderRoutes } from '@nuxt/kit'
 
-import pkg from '../package.json'
-
-import type { FeedmeModuleOptions } from './types.js'
+import type { FeedmeModuleOptions, FeedmeRSSOptions, FeedmeRSSRoute, FeedmeRSSRouteSettings } from './types'
 
 export default defineNuxtModule<FeedmeModuleOptions>({
   meta: {
     name: 'nuxt-feedme',
     configKey: 'feedme',
     compatibility: {
-      nuxt: '>=3.0.0',
+      nuxt: '>=4.0.0',
     },
-    version: pkg.version,
   },
-  // Default configuration options of the Nuxt module
+
   defaults: {
-    feeds: {
-      '/feed.atom': { revisit: '6h', type: 'atom1', content: true },
-      '/feed.xml': { revisit: '6h', type: 'rss2', content: true },
-      '/feed.json': { revisit: '6h', type: 'json1', content: true },
+    defaults: {
+      common: true,
+      routes: true,
     },
-    content: {
-      item: {
-        templateRoots: [true, 'feedme'],
-      },
-    },
-  },
+    feeds: {},
+  } as FeedmeModuleOptions,
+
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
-    nuxt.options.runtimeConfig.feedme = serialize(options)
+    if (options.defaults.common) {
+      options.feeds.common = deepmerge(
+        options.feeds.common ?? {},
+        { revisit: '6h', feed: { title: 'Generated title by nuxt-feedme!' } },
+      ) as FeedmeRSSOptions
+    }
 
-    nuxt.hook('nitro:config', (config) => {
-      for (const route in options.feeds) {
-        config.handlers ??= []
-        config.handlers.push({
-          handler: resolver.resolve('./runtime/handler'),
-          method: 'get',
-          route,
-        })
+    if (options.defaults.routes) {
+      options.feeds.routes = deepmerge(
+        options.feeds.routes ?? {},
+        {
+          '/feed.atom': { type: 'atom1' },
+          '/feed.json': { type: 'json1' },
+          '/feed.xml': { type: 'rss2' },
+        },
+      ) as Record<FeedmeRSSRoute, FeedmeRSSRouteSettings>
+    }
 
-        if (nuxt.options.ssr) {
-          config.prerender ??= {}
-          config.prerender.routes ??= []
-          config.prerender.routes.push(route)
+    nuxt.options.runtimeConfig.public.feedme = options
+
+    const routes = Object.keys(options.feeds.routes ?? {})
+    addPrerenderRoutes(routes)
+
+    for (const route of routes) {
+      addServerHandler({
+        route,
+        handler: resolver.resolve('./runtime/handler'),
+        method: 'get',
+        lazy: true,
+      } as NitroEventHandler)
+    }
+
+    addTypeTemplate({
+      filename: 'types/types.routes.d.ts',
+      getContents: () => {
+        let templateBody = ''
+        for (const route of routes) {
+          templateBody = `${templateBody}
+              'feedme:handle[${route}]': (options: NitroFeedmeHandleOptions) => void
+          `
         }
-      }
+
+        return `// Runtime typing for route based hooks
+        declare module 'nitropack/types' {
+          interface NitroRuntimeHooks {
+            ${templateBody}
+          }
+        }
+
+        export {}
+        `.replace(/^ {8}/gm, '')
+      },
     })
 
     nuxt.hook('prepare:types', ({ references }) => {
-      references.push({ path: resolver.resolve('./content.d.ts') })
-      references.push({ path: resolver.resolve('./feedme.d.ts') })
-      references.push({ path: resolver.resolve('./types.d.ts') })
+      references.push({ path: resolver.resolve('./types/revisit') })
+      references.push({ path: resolver.resolve('./types/index') })
     })
   },
 })

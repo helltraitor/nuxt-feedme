@@ -1,61 +1,22 @@
-const baseUrl = 'http://localhost:3000'
-
 export default defineNuxtConfig({
   modules: [
-    '@nuxt/content',
     '../src/module',
+    '@nuxt/ui',
   ],
+  devtools: { enabled: true },
+  compatibilityDate: '2025-09-21',
   feedme: {
-    feeds: {
-      '/feed.atom': {},
-      '/feed.xml': {},
-      '/contentDefaults.xml': { content: true },
-      '/contentCustomized.xml': {
-        feed: {
-          defaults: {
-            id: 'helltraitor-content',
-            title: 'Helltraitor Content',
-          },
-        },
-        content: true,
-      },
+    defaults: {
+      routes: false,
     },
-    content: {
-      feed: {
-        defaults: {
-          id: baseUrl,
-          title: 'Content driven',
-          link: baseUrl,
-          author: { email: 'helltraitor@hotmail.com', name: 'Helltraitor' },
-          categories: ['Content driven'],
-          copyright: 'CC BY-NC-SA 4.0 2023 by Helltraitor',
-        },
+    feeds: {
+      common: {
+        feed: { title: 'Overridden title value from module settings' },
       },
-      item: {
-        mapping: [
-          ['link', '_path'],
-        ],
-        templateRoots: [true, 'feedme'],
+      routes: {
+        '/feed.xml': { revisit: '1s' },
+        '/feed.atom': {},
       },
-      tags: [
-        /**
-         * Replace all strings that starts with `/.*` with by `base/.*`
-         * Tags applied at the last, when values received, but not set to feed or items yet
-         *
-         * Tags are applied for any root value:
-         * ```
-         * {
-         *  link, // <-- affected
-         *  image: {
-         *     link, // <-- affected
-         *   }
-         * }
-         * ```
-         */
-        [/^(?=\/)/, baseUrl],
-      ],
-      revisit: '1h',
     },
   },
-  devtools: { enabled: true },
 })
