@@ -1,13 +1,14 @@
 {
+  "private": true,
   "name": "nuxt-feedme-playground",
   "type": "module",
-  "private": true,
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
     "generate": "nuxi generate"
   },
-  "devDependencies": {
-    "nuxt": "latest"
+  "dependencies": {
+    "@nuxt/ui": "^3.3.4",
+    "nuxt": "^4.1.2"
   }
 }

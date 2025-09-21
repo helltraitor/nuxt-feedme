@@ -1,0 +1,28 @@
+name: nuxt-feedme
+
+x-defaults: &defaults
+  image: node:24.8.0-alpine3.22
+  working_dir: /project
+  volumes:
+    - ./:/project
+  depends_on:
+    install:
+      condition: service_completed_successfully
+
+services:
+  install:
+    <<: *defaults
+    depends_on: []
+    command: [yarn, install]
+
+  runtime:
+    <<: *defaults
+    command: [yarn, run, dev, --host, '0.0.0.0']
+    ports:
+      - '3000:3000'
+    profiles: [develop]
+
+  prepack:
+    <<: *defaults
+    command: [yarn, run, prepack]
+    profiles: [prepack]

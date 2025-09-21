@@ -172,6 +172,34 @@ export default defineNuxtConfig({
 
 That's it! You can now use `nuxt-feedme` in your Nuxt app ✨
 
+## Contribution
+
+<details>
+  <summary>Local development</summary>
+
+  For local development is highly recommended to use `docker`:
+  ```bash
+  docker compose --profile develop up
+  ```
+
+  Optional: run with detach (flag `-d`) if you want to release you session.
+
+  Alternative:
+
+  ```bash
+  # Install dependencies
+  yarn install
+
+  # Run playground
+  yarn run dev --host '0.0.0.0'
+
+  # Run prepack to make sure, that module is ready
+  yarn run prepack
+  ```
+
+  **Warning**: Please, use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/), otherwise you changes maybe rejected or pushed in alternative branch.
+</details>
+
 <!-- Badges -->
 [npm-version-src]: https://img.shields.io/npm/v/nuxt-feedme/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
 [npm-version-href]: https://npmjs.com/package/nuxt-feedme

@@ -1,11 +1,10 @@
 {
   "name": "nuxt-feedme",
-  "type": "module",
-  "version": "1.0.1",
-  "packageManager": "yarn@3.6.1",
+  "version": "2.0.0-alpha.1",
   "description": "The RSS feed module for Nuxt web framework",
-  "license": "MIT",
   "repository": "helltraitor/nuxt-feedme",
+  "license": "MIT",
+  "type": "module",
   "keywords": [
     "content",
     "feed",
@@ -15,46 +14,51 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/types.d.ts",
-      "require": "./dist/module.cjs",
+      "types": "./dist/types.d.mts",
       "import": "./dist/module.mjs"
     }
   },
-  "main": "./dist/module.cjs",
-  "types": "./dist/types.d.ts",
+  "main": "./dist/module.mjs",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/types.d.mts"
+      ]
+    }
+  },
   "files": [
     "dist"
   ],
   "scripts": {
     "prepack": "nuxt-module-build build",
-    "dev": "nuxi dev playground",
+    "dev": "npm run dev:prepare && nuxi dev playground",
     "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
-    "release": "npm run lint && npm run prepack && npm publish && git push --follow-tags",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "release": "echo 'Error: Release always must be done manually' && exit 1",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:watch": "vitest watch"
+    "test:watch": "vitest watch",
+    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
   },
   "dependencies": {
-    "@nuxt/content": "^2.7.0",
-    "@nuxt/kit": "^3.6.3",
-    "feed": "^4.2.2",
-    "h3": "^1.7.1",
-    "serialize-javascript": "^6.0.1"
+    "@nuxt/kit": "^4.1.2",
+    "deepmerge-ts": "^7.1.5",
+    "feed": "^5.1.0",
+    "h3": "^1.15.4"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.39.7",
-    "@nuxt/devtools": "latest",
-    "@nuxt/eslint-config": "^0.1.1",
-    "@nuxt/module-builder": "^0.8.3",
-    "@nuxt/schema": "^3.6.3",
-    "@nuxt/test-utils": "^3.6.3",
-    "@types/node": "^18.16.19",
-    "@types/serialize-javascript": "^5.0.2",
-    "changelogen": "^0.5.4",
-    "eslint": "^8.45.0",
-    "nitropack": "^2.5.2",
-    "nuxt": "^3.6.3",
-    "vitest": "^0.33.0"
+    "@nuxt/devtools": "^2.6.3",
+    "@nuxt/eslint-config": "^1.9.0",
+    "@nuxt/module-builder": "^1.0.2",
+    "@nuxt/schema": "^4.1.2",
+    "@nuxt/test-utils": "^3.19.2",
+    "@types/node": "latest",
+    "changelogen": "^0.6.2",
+    "eslint": "^9.35.0",
+    "nitropack": "^2.12.6",
+    "nuxt": "^4.1.2",
+    "typescript": "~5.9.2",
+    "vitest": "^3.2.4",
+    "vue-tsc": "^3.0.6"
   }
 }
