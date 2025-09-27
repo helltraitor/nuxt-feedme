@@ -2,6 +2,7 @@ import type { H3Event } from 'h3'
 import type { Feed, FeedOptions, Item } from 'feed'
 
 import type { FeedmeRevisit } from './revisit'
+import type { FeedmeContentOptions } from './content'
 
 export type FeedmeRSSRoute = string
 
@@ -23,12 +24,14 @@ export interface FeedmeRSSOptions {
   item?: Partial<Item>
 }
 
-export type FeedmeRSSRouteSettings = FeedmeRSSOptions
+export type FeedmeRSSRouteSettings = FeedmeRSSOptions & FeedmeContentOptions
 
 export interface FeedmeModuleOptions {
   defaults: {
     common?: boolean
     routes?: boolean
+    mapping?: boolean
+    mappingTemplates?: boolean
   }
   feeds: {
     common?: FeedmeRSSRouteSettings
@@ -42,7 +45,7 @@ export interface NitroFeedmeHandleOptions {
     routeSettings: FeedmeRSSRouteSettings
   }
   feed: {
-    obtain: (options?: FeedOptions) => Feed
+    obtain: (options?: Partial<FeedOptions>) => Feed
   }
 }
 

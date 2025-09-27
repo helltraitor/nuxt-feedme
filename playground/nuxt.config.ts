@@ -1,7 +1,10 @@
+const baseUrl = 'http://localhost:3000'
+
 export default defineNuxtConfig({
   modules: [
     '../src/module',
     '@nuxt/ui',
+    '@nuxt/content',
   ],
   devtools: { enabled: true },
   compatibilityDate: '2025-09-21',
@@ -12,10 +15,32 @@ export default defineNuxtConfig({
     feeds: {
       common: {
         feed: { title: 'Overridden title value from module settings' },
+        replace: [[/^(?=\/)/.toString(), baseUrl]],
       },
       routes: {
         '/feed.xml': { revisit: '1s' },
         '/feed.atom': {},
+        '/content.xml': {
+          feed: {
+            id: baseUrl,
+            title: 'Content driven',
+            link: baseUrl,
+            author: { email: 'helltraitor@hotmail.com', name: 'Helltraitor' },
+            category: 'Content driven',
+            copyright: 'CC BY-NC-SA 4.0 2023 by Helltraitor',
+          },
+        },
+        '/pages.xml': {
+          feed: {
+            id: baseUrl,
+            title: 'Content driven (pages + content from defaults)',
+            link: baseUrl,
+            author: { email: 'helltraitor@hotmail.com', name: 'Helltraitor' },
+            category: 'Content driven (pages)',
+            copyright: 'CC BY-NC-SA 4.0 2023 by Helltraitor',
+          },
+          collections: ['pages'],
+        },
       },
     },
   },

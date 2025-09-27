@@ -4,6 +4,9 @@ import { deepmerge } from 'deepmerge-ts'
 import { defineNuxtModule, createResolver, addTypeTemplate, addServerHandler, addPrerenderRoutes } from '@nuxt/kit'
 
 import type { FeedmeModuleOptions, FeedmeRSSOptions, FeedmeRSSRoute, FeedmeRSSRouteSettings } from './types'
+import type { FeedmeContentMappingRule } from './types/content'
+
+import { defaultContentMapping } from './runtime/mapping'
 
 export default defineNuxtModule<FeedmeModuleOptions>({
   meta: {
@@ -18,6 +21,8 @@ export default defineNuxtModule<FeedmeModuleOptions>({
     defaults: {
       common: true,
       routes: true,
+      mapping: true,
+      mappingTemplates: true,
     },
     feeds: {},
   } as FeedmeModuleOptions,
@@ -28,7 +33,12 @@ export default defineNuxtModule<FeedmeModuleOptions>({
     if (options.defaults.common) {
       options.feeds.common = deepmerge(
         options.feeds.common ?? {},
-        { revisit: '6h', feed: { title: 'Generated title by nuxt-feedme!' } },
+        {
+          revisit: '6h',
+          fixDateFields: true,
+          feed: { title: 'Generated title by nuxt-feedme!' },
+          collections: ['content'],
+        },
       ) as FeedmeRSSOptions
     }
 
@@ -41,6 +51,22 @@ export default defineNuxtModule<FeedmeModuleOptions>({
           '/feed.xml': { type: 'rss2' },
         },
       ) as Record<FeedmeRSSRoute, FeedmeRSSRouteSettings>
+    }
+
+    if (options.defaults.mappingTemplates) {
+      options.feeds.common ??= {}
+      options.feeds.common.templateMapping = deepmerge(
+        options.feeds.common?.templateMapping ?? [],
+        ['', 'meta', 'meta.feedme'],
+      )
+    }
+
+    if (options.defaults.mapping) {
+      options.feeds.common ??= {}
+      options.feeds.common.mapping = deepmerge(
+        options.feeds.common.mapping ?? [['link', 'path'] as FeedmeContentMappingRule],
+        defaultContentMapping(),
+      )
     }
 
     nuxt.options.runtimeConfig.public.feedme = options
@@ -64,6 +90,11 @@ export default defineNuxtModule<FeedmeModuleOptions>({
         for (const route of routes) {
           templateBody = `${templateBody}
               'feedme:handle[${route}]': (options: NitroFeedmeHandleOptions) => void
+
+              'feedme:handle:content:before[${route}]': (options: NitroFeedmeContentOptionsBefore) => void
+              'feedme:handle:content:query[${route}]': (options: NitroFeedmeContentOptionsQuery) => void
+              'feedme:handle:content:item[${route}]': (options: NitroFeedmeContentOptionsItem) => void
+              'feedme:handle:content:after[${route}]': (options: NitroFeedmeContentOptionsAfter) => void
           `
         }
 
@@ -81,6 +112,7 @@ export default defineNuxtModule<FeedmeModuleOptions>({
 
     nuxt.hook('prepare:types', ({ references }) => {
       references.push({ path: resolver.resolve('./types/revisit') })
+      references.push({ path: resolver.resolve('./types/content') })
       references.push({ path: resolver.resolve('./types/index') })
     })
   },
