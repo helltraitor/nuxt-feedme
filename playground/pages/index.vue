@@ -1,5 +1,10 @@
 <script setup>
 const routes = Object.keys(useRuntimeConfig().public.feedme.feeds.routes)
+
+const pages = [
+  ...(await queryCollection('content').all()),
+  ...(await queryCollection('pages').all()),
+]
 </script>
 
 <template>
@@ -25,11 +30,26 @@ const routes = Object.keys(useRuntimeConfig().public.feedme.feeds.routes)
           </li>
         </ul>
       </UContainer>
+      <UContainer class="p-8 text-2xl">
+        Content pages
+      </UContainer>
+      <UContainer>
+        <ul class="grid grid-rows gap-4">
+          <li
+            v-for="page in pages"
+            :key="page.path"
+            class="rounded-md border-1 border-solid p-2"
+          >
+            <ULink
+              as="button"
+              :to="page.path"
+              :external="true"
+            >
+              {{ page.title }}
+            </ULink>
+          </li>
+        </ul>
+      </UContainer>
     </UContainer>
   </UApp>
 </template>
-
-<style lang="css">
-@import "tailwindcss";
-@import "@nuxt/ui";
-</style>
