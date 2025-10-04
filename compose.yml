@@ -26,3 +26,24 @@ services:
     <<: *defaults
     command: [yarn, run, prepack]
     profiles: [prepack]
+
+  generate:
+    <<: *defaults
+    environment:
+      SCRIPT: |
+        if test -d /project/playground/.output; then
+          echo 'Output directory already exist, skipping...'
+          exit 0
+        fi
+
+        yarn run dev:generate
+    command: sh -c 'eval "$$SCRIPT"'
+    profiles: [test]
+
+  test:
+    <<: *defaults
+    command: [yarn, run, vitest, run]
+    depends_on:
+      generate:
+        condition: service_completed_successfully
+    profiles: [test]
