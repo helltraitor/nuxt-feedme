@@ -10,6 +10,7 @@ interface ContentTypeTestSuite {
 describe('Feed', async () => {
   await setup({
     rootDir: fileURLToPath(new URL('../playground', import.meta.url)),
+    setupTimeout: 480000,
   })
 
   const testSuites: ContentTypeTestSuite[] = [
