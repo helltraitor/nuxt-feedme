@@ -1,5 +1,8 @@
 # yaml-language-server: $schema=../schema.workflow.json
 
+on:
+  workflow_call:
+
 jobs:
   tests:
     name: 'Run tests for ${{ github.ref }}'
