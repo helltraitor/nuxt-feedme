@@ -60,6 +60,7 @@
     "better-sqlite3": "^12.2.0",
     "changelogen": "^0.6.2",
     "eslint": "^9.35.0",
+    "fast-xml-parser": "^5.3.0",
     "nitropack": "^2.12.6",
     "nuxt": "^4.1.2",
     "typescript": "~5.9.2",
