@@ -6,7 +6,7 @@ import type { NitroApp } from 'nitropack'
 export default (nitroApp: NitroApp) => {
   nitroApp.hooks.hook('feedme:handle', async ({ context: { event, routeSettings }, feed: { obtain } }) => {
     // Note: You need to manually escape content paths when use both manual and content approaches
-    const escapeRoutes = new Set(['/content.xml', '/pages.xml'])
+    const escapeRoutes = new Set(['/content.xml', '/pages.json'])
     if (escapeRoutes.has(event.path)) return
 
     // Note: Since there's no specialized hooks for atom feed, general will create feed object
