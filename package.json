@@ -30,6 +30,7 @@
     "dist"
   ],
   "scripts": {
+    "changelog": "git cliff -o",
     "prepack": "nuxt-module-build build",
     "dev": "npm run dev:prepare && nuxi dev playground",
     "dev:build": "nuxi build playground",
