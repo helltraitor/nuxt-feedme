@@ -2,9 +2,9 @@ const baseUrl = 'http://localhost:3000'
 
 export default defineNuxtConfig({
   modules: [
-    '../src/module',
     '@nuxt/ui',
     '@nuxt/content',
+    '../src/module',
   ],
   devtools: { enabled: true },
   compatibilityDate: '2025-09-21',
