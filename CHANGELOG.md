@@ -2,10 +2,29 @@
 
 ### 🚀 Features
 
+- *(test)* Implement github actions tests (#13)
+- *(test)* Implemented feed content test suites
+- *(test)* Add xml fast parser for vitest
+- *(test)* Docker test support
+- *(test)* Enhance sripts in package json for test purposes
+- *(test)* Set pages type to json for test purposes
+- *(test)* Implemented test suites
+- *(internal)* Provide content pages links for index page
 - *(internal)* Added git cliff
 - *(internal)* Allow publish via scripts
 - Reimplement content
 - Reimplement default handle
+
+### 🐛 Bug Fixes
+
+- *(test)* Switch action template to current branch
+- *(internal)* Escape new json route from manual handling to allow content feed it
+- *(internal)* Allow prerender to fail for playground since @nuxt/ui internal error
+
+### ⚙️ Miscellaneous Tasks
+
+- *(internal)* Reorder playground modules
+- Update changelog
 
 ## **Release** 1.0.1 - 2025-01-07
 
