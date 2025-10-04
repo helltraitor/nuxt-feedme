@@ -8,6 +8,11 @@ export default defineNuxtConfig({
   ],
   devtools: { enabled: true },
   compatibilityDate: '2025-09-21',
+  nitro: {
+    prerender: {
+      failOnError: false,
+    },
+  },
   feedme: {
     defaults: {
       routes: false,
