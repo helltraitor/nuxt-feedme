@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=../schema.workflow.json
+
+name: tests-common
+
+on: push
+
+jobs:
+  tests:
+    uses: helltraitor/nuxt-feedme/.github/workflows/tpl.tests.yml@feat/nuxt-feedme-v2-actions
