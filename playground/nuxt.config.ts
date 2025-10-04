@@ -30,7 +30,7 @@ export default defineNuxtConfig({
             copyright: 'CC BY-NC-SA 4.0 2023 by Helltraitor',
           },
         },
-        '/pages.xml': {
+        '/pages.json': {
           feed: {
             id: baseUrl,
             title: 'Content driven (pages + content from defaults)',
