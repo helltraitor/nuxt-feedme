@@ -5,7 +5,7 @@ on:
 
 jobs:
   tests:
-    name: 'Run tests for ${{ github.ref }}'
+    name: 'Run tests for ${{ github.ref }} with ${{ matrix.node-version }}'
     runs-on: ubuntu-latest
 
     defaults:
