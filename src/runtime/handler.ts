@@ -74,8 +74,8 @@ const feedmeHandleContent = async (event: H3Event, routeSettings: FeedmeRSSRoute
       fromCollections: (collections) => {
         routeSettings.collections = collections
       },
-      add: (query) => {
-        feedmeQueryPersistent.queries.push(query)
+      add: (...queries) => {
+        feedmeQueryPersistent.queries.push(...queries)
         return feedmeHandleQueryOptions.query
       },
       reset: () => {
