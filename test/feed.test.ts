@@ -248,4 +248,65 @@ describe('Feed', async () => {
         .toBe('2020-01-02T00:00:00.000Z')
     })
   })
+
+  describe('/hooked.xml', async () => {
+    it('Tests /hooked.xml validness', async () => {
+      const response = await fetch('/hooked.xml')
+      const content = await (await response.blob()).text()
+
+      expect(XMLValidator.validate(content), 'Test xml validness').toBe(true)
+    })
+
+    it('Tests /hooked.xml content', async () => {
+      const response = await fetch('/hooked.xml')
+      const content = await (await response.blob()).text()
+
+      const parser = new XMLParser()
+      const parsed = parser.parse(content)
+
+      expect(parsed?.rss?.channel?.title, 'Channel title')
+        .toBe('Content driven (filtered pages)')
+
+      expect(parsed?.rss?.channel?.link, 'Channel link')
+        .toBe('http://localhost:3000')
+
+      expect(parsed?.rss?.channel?.copyright, 'Channel copyright')
+        .toBe('CC BY-NC-SA 4.0 2023 by Helltraitor')
+
+      expect(parsed?.rss?.channel?.item?.length, 'Channel item amount')
+        .toBe(2)
+
+      // FIRST ITEM
+      expect(parsed?.rss?.channel?.item[0]?.title, 'First channel item title')
+        .toBe('Page item with feedme prefix and date')
+
+      expect(parsed?.rss?.channel?.item[0]?.link, 'First channel item link')
+        .toBe('/pages/pagesfeedmeitem')
+
+      expect(parsed?.rss?.channel?.item[0]?.guid, 'First channel item guid')
+        .toBe('pages/pages/pagesFeedmeItem.md')
+
+      expect(parsed?.rss?.channel?.item[0]?.pubDate, 'First channel item pubDate')
+        .toBe('Wed, 01 Jan 2020 00:00:00 GMT')
+
+      expect(parsed?.rss?.channel?.item[0]?.description, 'First channel item description')
+        .toBe('Content example')
+
+      // SECOND ITEM
+      expect(parsed?.rss?.channel?.item[1]?.title, 'Second channel item title')
+        .toBe('Feedme item with feedme prefix and date')
+
+      expect(parsed?.rss?.channel?.item[1]?.link, 'Second channel item link')
+        .toBe('/feedmeitem')
+
+      expect(parsed?.rss?.channel?.item[1]?.guid, 'Second channel item guid')
+        .toBe('content/feedmeItem.md')
+
+      expect(parsed?.rss?.channel?.item[1]?.pubDate, 'Second channel item pubDate')
+        .toBe('Fri, 03 Jan 2020 00:00:00 GMT')
+
+      expect(parsed?.rss?.channel?.item[1]?.description, 'Second channel item description')
+        .toBe('Content example')
+    })
+  })
 })

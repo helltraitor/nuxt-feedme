@@ -8,6 +8,7 @@ describe('SSGRespective', async () => {
     'feed.atom',
     'content.xml',
     'pages.json',
+    'hooked.xml',
   ]
 
   for (const filename of filenames) {
