@@ -46,6 +46,16 @@ export default defineNuxtConfig({
           },
           collections: ['pages'],
         },
+        '/hooked.xml': {
+          feed: {
+            id: baseUrl,
+            title: 'Content driven (filtered pages)',
+            link: baseUrl,
+            author: { email: 'helltraitor@hotmail.com', name: 'Helltraitor' },
+            category: 'Content driven (hooked)',
+            copyright: 'CC BY-NC-SA 4.0 2023 by Helltraitor',
+          },
+        },
       },
     },
   },
