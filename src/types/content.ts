@@ -60,6 +60,7 @@ export interface NitroFeedmeContentOptionsQuery {
   query: {
     fromCollections: (collections: string[]) => void
     add: (query: CollectionQueryBuilder<PageCollectionItemBase>) => NitroFeedmeContentOptionsQuery['query']
+    reset: () => NitroFeedmeContentOptionsQuery['query']
   }
 }
 

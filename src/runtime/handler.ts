@@ -78,6 +78,10 @@ const feedmeHandleContent = async (event: H3Event, routeSettings: FeedmeRSSRoute
         feedmeQueryPersistent.queries.push(query)
         return feedmeHandleQueryOptions.query
       },
+      reset: () => {
+        feedmeQueryPersistent.queries = []
+        return feedmeHandleQueryOptions.query
+      },
     },
   }
 
