@@ -4,13 +4,14 @@
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
+[![Tests (GitHub Actions)][tests-common-src]][tests-common-href]
 
-This module provides extra abilities for implementation RSS feed.
+This module provides extra abilities for implementing RSS feeds.
 It's pretty similar to [`module-feed`](https://nuxt.com/modules/module-feed),
-but have support [`nuxt-content`](https://nuxt.com/modules/content).
+but have support for [`nuxt-content`](https://nuxt.com/modules/content).
 
 If you need fully customized feeds, you can freely choose any feed module
-(this or the mentioned above). But this module can be more flexible.
+(this or the one mentioned above). But this module can be more flexible.
 
 - [🏀 Online playground](https://stackblitz.com/github/helltraitor/nuxt-feedme?file=playground%2Fapp.vue)
 
@@ -18,7 +19,7 @@ If you need fully customized feeds, you can freely choose any feed module
 
 - Configured out of the box for `nuxt-content`
 - Supports general and specialized hooks for both feed kinds
-- Flexible: use configuration defaults (feed, item), mapping (item)
+- Flexible: use configuration defaults (feed, item, routes), mapping (nuxt content to item)
   or hooks for customization
 - SSR and SSG support
 
@@ -28,147 +29,168 @@ Default settings are:
 
 ```ts
 {
-  feeds: {
-    '/feed.atom': { revisit: '6h', type: 'atom1', content: true },
-    '/feed.xml': { revisit: '6h', type: 'rss2', content: true },
-    '/feed.json': { revisit: '6h', type: 'json1', content: true },
+  defaults: {
+    common: true,
+    routes: true,
+    mapping: true,
+    mappingTemplates: true,
   },
-  content: {
-    item: {
-      templateRoots: [true, 'feedme'],
-    },
+  feeds: {
+    common: {
+        revisit: '6h',
+        fixDateFields: true,
+        feed: { title: 'Generated title by nuxt-feedme!' },
+        collections: ['content'],
+        templateMapping: ['', 'meta', 'meta.feedme'],
+        mapping: [
+          ['link', 'path'],
+        ],
+      },
+    routes: {
+        '/feed.atom': { type: 'atom1' },
+        '/feed.json': { type: 'json1' },
+        '/feed.xml': { type: 'rss2' },
+    }
   },
 }
 ```
+
+By design, Nuxt will merge default settings and user-provided ones.
+And sometimes you'll need to omit defaults in favor of your own settings.
+To do this, just set false to needed default.
+
+The `fixDateFields` option affects only created Feed Items (`date` and `published` fields).
 
 ### General and specialized hooks
 
+Feedme supports the following general and specialized hooks:
+- `feedme:handle[${PATH}]`
+- `feedme:handle`
+- `feedme:handle:content:before[${PATH}]`
+- `feedme:handle:content:before`
+- `feedme:handle:content:query[${PATH}]`
+- `feedme:handle:content:query`
+- `feedme:handle:content:item[${PATH}]`
+- `feedme:handle:content:item`
+- `feedme:handle:content:after[${PATH}]`
+- `feedme:handle:content:after`
+
+*Where `PATH` is the feed route (e.g., `/feed.xml` or any user-defined).*
+
+Content hooks are executed **only** when the default handle doesn't create a feed.
+The feed creation in `feedme:content*` hooks prevents Feedme from automatic creation via content module.
+
+You may use a specialized hook for creating a custom feed, or "escape" route from your custom creation.
+
 ```ts
-// project-name/server/plugins/feedme.ts
 import type { NitroApp } from 'nitropack'
 
-// Nitro hooks can be set only in nitro plugin
 export default (nitroApp: NitroApp) => {
-  // General hook: feedme:handle:content:item
-  // Specialized hook: feedme:handle:content:item[*]
-  //
-  // When specialized hook set, general also will be called
-  nitroApp.hooks.hook('feedme:handle:content:item[/contentDefaults.xml]', async ({ feed: { insert, invoke, parsed } }) => {
-    if (parsed.title === 'First item') {
-      // Invoke in case if item was created by another callback
-      const maybeItemOptions = invoke()
+  nitroApp.hooks.hook('feedme:handle', async ({ context: { event, routeSettings }, feed: { obtain } }) => {
+    // Note: You need to manually escape content paths when use both manual and content approaches
+    const escapeRoutes = new Set(['/content.xml', '/pages.json'])
+    if (escapeRoutes.has(event.path)) return
 
-      // Insert replaces current item configuration
-      insert({
-        ...maybeItemOptions,
-        category: [
-          ...maybeItemOptions?.category ?? [],
-          { name: 'content hook processed' },
-        ],
-      })
-    }
+    // Note: Since there's no specialized hooks for atom feed, general will create feed object
+    const feed = obtain({ title: `Default feed for '${event.path}'`, ...routeSettings.feed })
+    feed.addItem({ date: new Date('2025-09-20'), link: '/', title: 'General hook article' })
   })
 
-  // Specialized hook for default feed
-  nitroApp.hooks.hook('feedme:handle[/feed.xml]', async ({ context: { event }, feed: { create } }) => {
-    // Create also replaces current feed
-    create({ id: '', title: `Special feed for '${event.path}' route`, copyright: '' })
-  })
-
-  // General hook for default feed
-  nitroApp.hooks.hook('feedme:handle', async ({ context: { event }, feed: { create, invoke } }) => {
-    invoke() ?? create({ id: '', title: `Default feed for '${event.path}' route`, copyright: '' })
+  nitroApp.hooks.hook('feedme:handle[/feed.xml]', async ({ context: { event }, feed: { obtain } }) => {
+    // Note: Specialized hook is always called before general
+    const feed = obtain({ title: `Special feed for '${event.path}' route` })
+    feed.addItem({ date: new Date('2025-09-21'), title: 'Exclusive for xml (from specialized hook)' })
   })
 }
 ```
 
+*You still can modify the content feed via content hooks.*
+
+#### Content hooks roles
+
+- Use `feedme:handle:content:before*` hooks to setup Feed before any interaction.
+- Use `feedme:handle:content:query*` hooks to provide custom queries or collections (collections are ignored when queries are provided).
+- Use `feedme:handle:content:item*` hooks to manipulate the feed item candidate or delete (discard) it.
+- Use `feedme:handle:content:after*` hooks to manipulate over completed feeds when you need it.
+
+See examples in `playground/server/plugins/feed.ts`.
+
 ### Mapping configuration
 
-Mapping is used for linking [`feed`](https://github.com/jpmonette/feed) item object key
-to the path in parsed content:
+Mapping is used for linking [`feed`](https://github.com/jpmonette/feed)
+item keys to the paths in parsed content.
+
+**BREAKING CHANGE**: Since v2, the third argument is no longer supported.
+Use `feedme:handle:content:item*` hooks to modify data
+(raw parsed content via `raw` or item candidate via `set`, `get` and `del`).
+
+The Feedme module provides default mapping as is and template roots for `''` (root),
+`'meta'` (nuxt parsed content field for user object in `.md` file),
+`'meta.feedme'` (nested object in `.md` file object).
+
+Also, Feedme provides additional mapping `['link', 'path']`
+(nuxt default field `link` in parsed content object to feed item `path` field).
+
+With template roots, it is possible to automatically create a feed item
+from the `.md` content page (see the `playground` directory).
+
+For simplicity, Feedme sets `feeds.common.fixDateFields` to `true`,
+which enables string-to-date conversion for **candidate** items before `feedme:handle:content:item*` hooks.
+
+### Replace
+
+*Previously known as tags.*
+
+The replace field is an array of pairs.
+
+The first item is string, which is considered a serialized `RegExp` object and used
+for searching replacement in parsed content object values (with recursion).
+
+The second item is an actual string that is being used to replace all matched `RegExp`.
+
+*Most settings can be set in common and per route.*
 
 ```ts
 {
-  item: {
-    mapping: [
-      // Third item is optional mapping function
-      ['date', 'modified', value => value ? new Date(value) : value],
-      // When mapping function result is undefined - next variant applied
-      ['date', 'created', value => value ? new Date(value) : value],
-      // Until the real one value will be set
-      ['date', '', () => new Date()],
-      // By default mapping is x => x
-      ['link', '_path'],
-    ],
-    // Create default mappings with indicated roots:
-    //   [keyof Item /* such as image, id, link */, root + keyof Item]
-    //
-    // The true value means use empty root:
-    //   ['link', 'link']
-    //
-    // Where any other key means use this as path to value:
-    //  ['link', `{root}.link`]
-    //
-    // Root can be separate by `.` which allows to deep invoking
-    templateRoots: [true, 'feedme'],
+  feeds: {
+    common: {
+      replace: [[/^(?=\/)/.toString(), baseUrl]],
+    },
   }
 }
 ```
 
-**NOTE**: Date value is a special case for `feed` module, so by default mapping provides
-the next map for the date field: `value => value ? new Date(value) : new Date()`
-So in case when you provide your own alias for date - you need to provide map function
-
-**NOTE**: The mapping function is serialized so its required to not to have any references in outer scopes
-
-### Tags
-
-Tags allow to replace node values according to match:
-
-```ts
-{
-  // Allows to pass optional map function
-  tags: [
-    // This tags replace first empty symbol if value starts with /
-    // Example: /link -> urlBase/link
-    [/^(?=\/)/, urlBase],
-  ],
-}
-```
-
-**Note**: Tags applied recursively, item.field.inner (value) is affected
-
 ## Quick Setup
 
-1. Add `nuxt-feedme` dependency to your project
+1. Add the `nuxt-feedme` dependency to your project.
 
-Use your favorite package manager (I prefer yarn)
+    Use your favorite package manager (I prefer yarn)
 
-```bash
-yarn add -D nuxt-feedme
+    ```bash
+    yarn add -D nuxt-feedme
 
-pnpm add -D nuxt-feedme
+    pnpm add -D nuxt-feedme
 
-npm install --save-dev nuxt-feedme
-```
+    npm install --save-dev nuxt-feedme
+    ```
 
-Or install it via `nuxi module`
+    Or install it via `nuxi module`
 
-```bash
-npx nuxi@latest module add nuxt-feedme
-```
+    ```bash
+    npx nuxi@latest module add nuxt-feedme
+    ```
 
 2. Add `nuxt-feedme` to the `modules` section of `nuxt.config.ts`
 
-```js
-export default defineNuxtConfig({
-  modules: [
-    // After nuxt content
-    '@nuxt/content',
-    'nuxt-feedme'
-  ]
-})
-```
+    ```js
+    export default defineNuxtConfig({
+      modules: [
+        // After nuxt content
+        '@nuxt/content',
+        'nuxt-feedme'
+      ]
+    })
+    ```
 
 That's it! You can now use `nuxt-feedme` in your Nuxt app ✨
 
@@ -212,3 +234,6 @@ That's it! You can now use `nuxt-feedme` in your Nuxt app ✨
 
 [nuxt-src]: https://img.shields.io/badge/Nuxt-18181B?logo=nuxt.js
 [nuxt-href]: https://nuxt.com
+
+[tests-common-src]: https://github.com/helltraitor/nuxt-feedme/actions/workflows/tests.common.yml/badge.svg?branch=main
+[tests-common-href]: https://github.com/helltraitor/nuxt-feedme/actions/workflows/tests.common.yml
