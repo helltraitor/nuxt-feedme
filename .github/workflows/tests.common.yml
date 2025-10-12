@@ -6,4 +6,4 @@ on: push
 
 jobs:
   tests:
-    uses: helltraitor/nuxt-feedme/.github/workflows/tpl.tests.yml@feat/nuxt-feedme-v2
+    uses: helltraitor/nuxt-feedme/.github/workflows/tpl.tests.yml@main
