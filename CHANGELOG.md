@@ -2,6 +2,11 @@
 
 ### 🚀 Features
 
+- *(docs)* Update README.md
+- *(test)* Add tests for hooked route
+- *(internal)* Hooked example
+- Added backward compatible support to provide several queries in one call
+- Added reset support for content query options
 - *(test)* Implement github actions tests (#13)
 - *(test)* Implemented feed content test suites
 - *(test)* Add xml fast parser for vitest
@@ -17,12 +22,15 @@
 
 ### 🐛 Bug Fixes
 
+- *(test)* Change tpl branch ref
 - *(test)* Switch action template to current branch
 - *(internal)* Escape new json route from manual handling to allow content feed it
 - *(internal)* Allow prerender to fail for playground since @nuxt/ui internal error
 
 ### ⚙️ Miscellaneous Tasks
 
+- Release 2.0.0
+- Update changelog
 - *(internal)* Reorder playground modules
 - Update changelog
 
