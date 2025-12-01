@@ -21,7 +21,7 @@ export default defineNuxtConfig({
       common: {
         feed: { title: 'Overridden title value from module settings' },
         replace: [[/^(?=\/)/.toString(), baseUrl]],
-        contentType: 'utf8',
+        charset: 'utf8',
       },
       routes: {
         '/feed.xml': { revisit: '1s' },
@@ -46,7 +46,7 @@ export default defineNuxtConfig({
             copyright: 'CC BY-NC-SA 4.0 2023 by Helltraitor',
           },
           collections: ['pages'],
-          contentType: 'utf-16',
+          charset: 'utf-16',
         },
         '/hooked.xml': {
           feed: {

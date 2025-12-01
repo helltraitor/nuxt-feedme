@@ -22,7 +22,7 @@ export interface FeedmeRSSOptions {
   revisit?: FeedmeRevisit
   feed?: Partial<FeedOptions>
   item?: Partial<Item>
-  contentType?: string
+  charset?: string
 }
 
 export type FeedmeRSSRouteSettings = FeedmeRSSOptions & FeedmeContentOptions

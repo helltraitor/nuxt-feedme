@@ -45,7 +45,7 @@ Default settings are:
         mapping: [
           ['link', 'path'],
         ],
-        contentType: 'utf-8',
+        charset: 'utf-8',
       },
     routes: {
         '/feed.atom': { type: 'atom1' },
