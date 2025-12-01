@@ -3,9 +3,13 @@ import { XMLValidator, XMLParser } from 'fast-xml-parser'
 import { describe, it, expect } from 'vitest'
 import { setup, fetch } from '@nuxt/test-utils/e2e'
 
+type FeedmeContentTypes = 'application/rss+xml' | 'application/atom+xml' | 'application/json'
+type FeedmeContentCharset = `charset=${string}`
+
 interface ContentTypeTestSuite {
   route: string
-  type: 'application/rss+xml' | 'application/atom+xml' | 'application/json'
+  // Content Type with optional suffix (empty or  header values)
+  type: FeedmeContentTypes | `${FeedmeContentTypes}; ${FeedmeContentCharset}`
 }
 
 describe('Feed', async () => {
@@ -16,11 +20,12 @@ describe('Feed', async () => {
 
   describe('ContentType', async () => {
     const testSuites: ContentTypeTestSuite[] = [
-      { route: '/feed.xml', type: 'application/rss+xml' },
-      { route: '/feed.atom', type: 'application/atom+xml' },
-      { route: '/content.xml', type: 'application/rss+xml' },
-      { route: '/pages.json', type: 'application/json' },
-      { route: '/hooked.xml', type: 'application/rss+xml' },
+      // utf-8 is the default value from handler, utf8 tests that parameter is respected from module values
+      { route: '/feed.xml', type: 'application/rss+xml; charset=utf8' },
+      { route: '/feed.atom', type: 'application/atom+xml; charset=utf8' },
+      { route: '/content.xml', type: 'application/rss+xml; charset=utf8' },
+      { route: '/pages.json', type: 'application/json; charset=utf-16' },
+      { route: '/hooked.xml', type: 'application/rss+xml; charset=unicode-1-1-utf-8' },
     ]
 
     for (const suite of testSuites) {
