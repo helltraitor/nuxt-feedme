@@ -20,6 +20,7 @@ describe('Feed', async () => {
       { route: '/feed.atom', type: 'application/atom+xml' },
       { route: '/content.xml', type: 'application/rss+xml' },
       { route: '/pages.json', type: 'application/json' },
+      { route: '/hooked.xml', type: 'application/rss+xml' },
     ]
 
     for (const suite of testSuites) {
