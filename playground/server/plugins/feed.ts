@@ -33,4 +33,19 @@ export default (nitroApp: NitroApp) => {
     // Delete all items which has `root` in their title
     if (item.get().title?.match(/root/gi)) item.del()
   })
+
+  nitroApp.hooks.hook('feedme:handle:content:after[/hooked.xml]', async ({ context: { event } }) => {
+    // Content Type contains detected feed type and at least default charset
+    // So it always satisfies next schema: `feed-type; charset=.*`
+    const maybeArrayContentType = event.node.res.getHeader('content-type')
+    const currentContentType = [maybeArrayContentType]
+      .flat()
+      ?.at(0)
+      ?.toString()
+      ?.split(';', 1)
+      ?.at(0)
+      ?? 'text/plain'
+
+    event.node.res.setHeader('content-type', `${currentContentType}; charset=unicode-1-1-utf-8`)
+  })
 }
