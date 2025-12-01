@@ -181,8 +181,9 @@ export default defineEventHandler(async (event) => {
     ...routeMergedTemplateMapping.flatMap(prefix => templateContentMapping(prefix, routeMergedSettings.mapping ?? [])),
   )
 
+  const detectedContentType = intoContentType(routeMergedSettings.type ?? getFeedmeRSSTypeFrom(event.path)) ?? 'text/plain'
   setHeaders(event, {
-    'Content-Type': intoContentType(routeMergedSettings.type ?? getFeedmeRSSTypeFrom(event.path)) ?? 'text/plain',
+    'Content-Type': `${detectedContentType}; charset=${routeMergedSettings.contentType ?? 'utf-8'}`,
     'Cache-Control': `Max-Age=${intoSeconds(routeMergedSettings.revisit)}`,
   })
 
