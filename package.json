@@ -1,6 +1,6 @@
 {
   "name": "nuxt-feedme",
-  "version": "2.1.0-rc.1",
+  "version": "2.1.0",
   "description": "The RSS feed module for Nuxt web framework",
   "repository": "helltraitor/nuxt-feedme",
   "license": "MIT",

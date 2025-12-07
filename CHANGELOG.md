@@ -1,4 +1,23 @@
-## [unreleased]
+## **Release** 2.1.0 - 2025-12-07
+
+### 🚀 Features
+
+- *(docs)* Add mention about contentType
+- *(test)* Testing headers
+- *(internal)* Add example for header set
+- Add content type opt in parameter
+
+### 🐛 Bug Fixes
+
+- *(test)* Add tests for hooked headers
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* V2.1.0-rc.1
+- Rename contentType to charset
+- Updated dependencies
+
+## **Release** 2.0.0 - 2025-10-12
 
 ### 🚀 Features
 
@@ -29,6 +48,7 @@
 
 ### ⚙️ Miscellaneous Tasks
 
+- Update changelog
 - Release 2.0.0
 - Update changelog
 - *(internal)* Reorder playground modules
